@@ -1,0 +1,9 @@
+<div class="tool-triangle"></div>
+<div class="tool-triangle-outer"></div>
+<span>{{{text}}}</span>
+{{#confirmation}}
+<div class="confirmation-buttons">
+    <button class="btn btn-secondary tooltip-confirm">Yes</button>
+    <button class="btn btn-secondary tooltip-deny">No</button>
+</div>
+{{/confirmation}}
