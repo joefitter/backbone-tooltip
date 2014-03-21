@@ -14,12 +14,21 @@ define([
     borderWidth: 2,
     arrowSize: 10,
     initialize: function(options) {
-      var self = this;
       this.options = options || {};
+      var self = this,
+        currentTooltip = this.options.target.data('activeTooltip');
+      if(currentTooltip){
+        if(currentTooltip.options.interrupt) {
+          return;
+        }
+        currentTooltip.destroy();
+      }
+      this.options.target.data('activeTooltip', this);
+      
       this.id = this.options.id || null;
       this.elemWidth = this.options.target.outerWidth();
       this.elemHeight = this.options.target.outerHeight();
-      this.options.target.data('activeTooltip', this);
+      
       this.options.rootElem = this.options.rootElem || $('#cmp-body-content');
       this.options.moveUp = this.options.moveUp || 0;
       this.render();
