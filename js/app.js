@@ -1,14 +1,14 @@
 requirejs.config({
   baseUrl: '/',
   paths: {
-    'backbone': 'bower_components/backbone/backbone',
-    'underscore': 'bower_components/underscore/underscore',
-    'jquery': 'bower_components/jquery/dist/jquery'
+    'backbone': 'vendor/backbone/backbone',
+    'underscore': 'vendor/underscore/underscore',
+    'jquery': 'vendor/jquery/dist/jquery'
   }
 })
 
 define([
-	'bower_components/backbone-tooltip/src/backbone-tooltip.amd'
+	'vendor/backbone-tooltip/src/backbone-tooltip.amd'
 ], function(
   Tooltip
 ){
