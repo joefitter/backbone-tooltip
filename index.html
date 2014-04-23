@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>test</title>
+	<script src="bower_components/requirejs/require.js" data-main="js/app"></script>
+
+	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+	<link rel="stylesheet" href="bower_components/backbone-tooltip/src/backbone-tooltip.css">
+	<link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+	<div id="root-element" class="container">
+		<div class="panel panel-default" style="margin-top:50px;">
+			<div class="panel-body">
+				<h2>Backbone Tooltip</h2>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="well">
+							<h3>Context</h3>
+							<p>Tooltips can be given context by passing an optional <code>{context:'info|success|warning|error'}</code> when instantiating. If no context is passed, the tooltip will default to light blue.</p>
+							<div class="form-group">
+								<input type="text" class="form-control" placeholder="Info tooltip" data-tooltip="This is an info tooltip, just to help you out" data-context="info" />
+							</div>
+							<div class="form-group">
+								<input type="text" class="form-control" placeholder="Success tooltip" data-tooltip="Wahey! you did something right - this tooltip is happy about it" data-context="success" />
+							</div>
+							<div class="form-group">
+								<input type="text" class="form-control" placeholder="Warning tooltip" data-tooltip="Uh oh - something you are doing doesn't seem quite right" data-context="warning"/>
+							</div>
+							<div class="form-group">
+								<input type="text" class="form-control" placeholder="Error tooltip" data-tooltip="Oh snap! Something went wrong!" data-context="error" />
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="well">
+							<h3>Alignment</h3>
+							<p>Tooltips can be aligned to the top, left, right or beneath the target element, try passing <code>{align: 'top|left|right|bottom'}</code> to change the alignment. If no align option is passed, the default alignment is above the element.</p>
+							<div class="form-group">
+								<input type="text" class="form-control" data-align="left" placeholder="Align left..." data-tooltip="This tooltip is aligned left" />
+							</div>
+							<div class="form-group">
+								<input type="text" class="form-control" data-align="top" placeholder="Align top..." data-tooltip="This tooltip is top aligned"/>
+							</div>
+							<div class="form-group">
+								<input type="text" class="form-control" data-align="bottom" placeholder="Align bottom..." data-tooltip="This tooltip is beneath the element" />
+							</div>
+							<div class="form-group">
+								<input type="text" class="form-control" data-align="right" placeholder="Align right..." data-tooltip="This tooltip is right-aligned"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="well">
+					<h3>Triggers &amp; Events</h3>
+					<div class="row">
+						<div class="col-md-6">
+							<p>AMD Tooltips can be used in different ways. The default behaviour is to specify trigger events using <a href="http://backbonejs.org/#Events" target="_blank">Backbone Events</a> in the parent view. When the event is fired create a <code>new Tooltip()</code> instance passing in an options hash or jQuery target object.</p>
+							<pre>new Tooltip({
+  target: $jQueryObject,
+  text: 'Hi there',
+  align: 'top'
+});
+
+//or
+
+new Tooltip($jqueryObject);</pre>
+							<p>The tooltip is faded out and destroyed if something other than the tooltip or target element is clicked or the Tab key is pressed.</p>
+						</div>
+						<div class="col-md-6">
+							<a class="btn btn-primary" data-trigger="click" data-exit="click">Click Me</a>
+							<a class="btn btn-primary" data-trigger="mouseenter" data-exit="mouseleave">Hover Over Me</a>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
