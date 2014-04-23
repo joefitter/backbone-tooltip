@@ -21,11 +21,11 @@
     "backbone": "~1.1.2",
     "jquery": "~2.1.0"
   },
-  "_release": "bf292ccff4",
+  "_release": "e74455d09b",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "bf292ccff47a08fbcab3931e91cd1be11a8c4258"
+    "commit": "e74455d09bfd7643226d831302e707faccd24b36"
   },
   "_source": "git://github.com/joefitter/backbone-tooltip.git",
   "_target": "*",
