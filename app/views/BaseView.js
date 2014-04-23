@@ -1,14 +1,8 @@
-/* global _ */
-
 define([
   'backbone',
-  'stache!tooltip'
 ], function(
   Backbone,
-  tooltipTemplate
 ) {
-  'use strict';
-
   return Backbone.View.extend({
     className: 'tooltip',
     borderWidth: 2,
@@ -29,7 +23,7 @@ define([
       this.elemWidth = this.options.target.outerWidth();
       this.elemHeight = this.options.target.outerHeight();
       
-      this.options.rootElem = this.options.rootElem || $('#cmp-body-content');
+      this.options.rootElem = this.options.rootElem || $('body');
       this.options.moveUp = this.options.moveUp || 0;
       this.render();
       this.clickHandler = _.bind(this.clicked, this);
@@ -86,7 +80,14 @@ define([
     },
     render: function() {
       var self = this;
-      this.$el.html(tooltipTemplate(this.options));
+      this.$el.html(_.template('<div class="arrow"></div>\
+        <span><%= text %></span>\
+        <% if(feedback) { %>\
+          <div class="feedback-buttons">\
+              <button class="btn btn-secondary tooltip-confirm">Yes</button>\
+              <button class="btn btn-secondary tooltip-deny">No</button>\
+          </div>\
+        <% } %>')(this.options));
       this.options.rootElem.append(this.el);
       this.addClasses();
       this.getSize();
