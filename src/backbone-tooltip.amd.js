@@ -1,27 +1,32 @@
+/*global _*/
+/*jshint strict:false*/
+
 define([
   'backbone'
 ], function(
   Backbone
 ) {
+
+  /* leaving out use strict statement so
+     can be included in non-strict modules */
+
   return Backbone.View.extend({
     className: 'tooltip',
     borderWidth: 2,
     arrowSize: 10,
     initialize: function(options) {
-      if(options instanceof jQuery){
+      if (options instanceof jQuery) {
         this.options = this.parseDataAttributes(options);
       } else {
         this.options = options || {};
       }
-      if(!this.options.$el){
+      if (!this.options.$el) {
         throw new Error('Tooltip needs a target element');
-        return;
       }
       this.options.speed = this.options.speed === undefined ? 200 : parseInt(this.options.speed, 10);
-      var self = this,
-        currentTooltip = this.options.$el.data('activeTooltip');
-      if(currentTooltip){
-        if(currentTooltip.options.interrupt) {
+      var currentTooltip = this.options.$el.data('activeTooltip');
+      if (currentTooltip) {
+        if (currentTooltip.options.interrupt) {
           return;
         }
         currentTooltip.destroy();
@@ -31,11 +36,11 @@ define([
 
       this.elemWidth = this.options.$el.outerWidth();
       this.elemHeight = this.options.$el.outerHeight();
-      
+
       this.options.rootElem = this.options.rootElem || $('body');
       this.options.moveUp = this.options.moveUp || 0;
       this.render();
-      if(!this.options.trigger){
+      if (!this.options.trigger) {
         this.addEvents();
         this.show();
       } else {
@@ -44,7 +49,7 @@ define([
         this.options.$el.bind(this.options.trigger, this.enterHandler);
       }
     },
-    parseDataAttributes: function($el){
+    parseDataAttributes: function($el) {
       var ops = {};
       ops.$el = $el;
       ops.align = $el.attr('data-align');
@@ -66,9 +71,9 @@ define([
       this.trigger('confirmed', this);
       return false;
     },
-    show: function(){
+    show: function() {
       this.$el.stop().fadeIn(this.options.speed);
-      if(this.options.trigger){
+      if (this.options.trigger) {
         this.options.$el.unbind(this.options.trigger, this.enterHandler);
         this.options.$el.bind(this.options.exit, this.exitHandler);
       }
@@ -93,14 +98,14 @@ define([
         });
         elems.each(function(i, item) {
           if (item !== self.options.$el.get(0)) {
-            var ttip;
-            if (ttip = $(item).data('activeTooltip')) {
-              if(ttip.options.trigger){
-                if(ttip.$el.is(':visible')){
+            var ttip = $(item).data('activeTooltip');
+            if (ttip) {
+              if (ttip.options.trigger) {
+                if (ttip.$el.is(':visible')) {
                   ttip.hide();
                 }
               } else {
-                ttip.exit();  
+                ttip.exit();
               }
             }
           }
@@ -127,15 +132,16 @@ define([
       }
     },
     render: function() {
-      var self = this;
-      this.$el.html(_.template('<div class="arrow"></div>\
-        <span><%= options.text %></span>\
-        <% if(options.feedback) { %>\
-          <div class="feedback-buttons">\
-              <button class="btn btn-primary tooltip-confirm">Yes</button>\
-              <button class="btn btn-primary tooltip-deny">No</button>\
-          </div>\
-        <% } %>')(this));
+      var self = this,
+        template = '<div class="arrow"></div>';
+      template += '<span><%= options.text %></span>';
+      template += '<% if(options.feedback) { %>';
+      template += '<div class="feedback-buttons">';
+      template += '<button class="btn btn-primary tooltip-confirm">Yes</button>';
+      template += '<button class="btn btn-primary tooltip-deny">No</button>';
+      template += '</div>';
+      template += '<% } %>';
+      this.$el.html(_.template(template)(this));
       this.options.rootElem.append(this.el);
       this.addClasses();
       this.getSize();
@@ -155,7 +161,7 @@ define([
     },
     positionSelf: function() {
       var rootElemOffset = this.options.rootElem.offset(),
-        scrollTop = this.options.rootElem.prop('tagName') === "BODY" ? 0 : this.options.rootElem.get(0).scrollTop,
+        scrollTop = this.options.rootElem.prop('tagName') === 'BODY' ? 0 : this.options.rootElem.get(0).scrollTop,
         pos = this.options.$el.offset();
       pos.top = pos.top - rootElemOffset.top + scrollTop;
       pos.left = pos.left - rootElemOffset.left;
@@ -189,9 +195,9 @@ define([
       });
       return false;
     },
-    hide: function(){
+    hide: function() {
       this.$el.stop().fadeOut(this.options.speed);
-      if(this.options.trigger){
+      if (this.options.trigger) {
         this.options.$el.unbind(this.options.exit, this.exitHandler);
         this.options.$el.bind(this.options.trigger, this.enterHandler);
       }
@@ -202,7 +208,7 @@ define([
       $(window).unbind('click', this.clickHandler);
       $(window).unbind('keydown', this.keypressHandler);
       this.options.$el.off('mouseleave');
-      if(this.options.trigger){
+      if (this.options.trigger) {
         this.options.$el.unbind(this.options.exit, this.exitHandler);
         this.options.$el.unbind(this.options.trigger, this.enterHandler);
       }
