@@ -1,5 +1,6 @@
 {
   "name": "backbone-tooltip",
+  "version": "0.0.2",
   "homepage": "https://github.com/joefitter/backbone-tooltip",
   "authors": [
     "Joe Fitter <joefitter@hotmail.com>"
@@ -21,13 +22,14 @@
     "backbone": "~1.1.2",
     "jquery": "~2.1.0"
   },
-  "_release": "e74455d09b",
+  "_release": "0.0.2",
   "_resolution": {
-    "type": "branch",
-    "branch": "master",
-    "commit": "e74455d09bfd7643226d831302e707faccd24b36"
+    "type": "version",
+    "tag": "v0.0.2",
+    "commit": "21262211e996e07c1706d5b23398e1acd85e41f5"
   },
   "_source": "git://github.com/joefitter/backbone-tooltip.git",
-  "_target": "*",
-  "_originalSource": "backbone-tooltip"
+  "_target": "~0.0.2",
+  "_originalSource": "backbone-tooltip",
+  "_direct": true
 }
