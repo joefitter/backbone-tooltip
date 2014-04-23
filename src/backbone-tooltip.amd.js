@@ -1,7 +1,7 @@
 define([
-  'backbone',
+  'backbone'
 ], function(
-  Backbone,
+  Backbone
 ) {
   return Backbone.View.extend({
     className: 'tooltip',
