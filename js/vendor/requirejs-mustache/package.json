@@ -1,0 +1,38 @@
+{
+    "name": "requirejs-mustache",
+    "version": "0.0.3",
+    "description": "A RequireJS/AMD loader plugin for Mustache.js micro-templates",
+    "homepage": "http://github.com/jfparadis/requirejs-mustache",
+    "keywords": [
+        "require",
+        "requirejs",
+        "mustache",
+        "template"
+    ],
+    "maintainers": [
+        {
+            "name": "Jean-Francois Paradis",
+            "twitter": "@jfparadis",
+            "email": "jf@jeanfrancoisparadis.com",
+            "web": "http://jeanfrancoisparadis.com/"
+        }
+    ],
+    "dependencies": {
+        "http://github.com/jfparadis/requirejs-mustache": "master"
+    },
+    "bugs": {
+        "url": "https://github.com/jfparadis/requirejs-mustache/issues"
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "git@github.com:jfparadis/requirejs-mustache.git"
+            }
+    ],
+    "licenses": [
+        {
+            "name": "MIT",
+            "url": "http://www.opensource.org/licenses/mit-license.php"
+        }
+    ]
+}

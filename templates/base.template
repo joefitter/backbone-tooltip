@@ -1,0 +1,149 @@
+<div class="panel panel-default" style="margin-top:50px;">
+	<div class="panel-body">
+		<h2>Backbone Tooltip</h2>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="well">
+					<h3>Context</h3>
+					<p>Tooltips can be given context by passing an optional <code>{context:'info|success|warning|error'}</code> when instantiating. If no context is passed, the tooltip will default to light blue.</p>
+					<div class="form-group">
+						<input type="text" class="form-control" placeholder="Info tooltip..." data-tooltip="This is an info tooltip, just to help you out" data-context="info" />
+					</div>
+					<div class="form-group">
+						<input type="text" class="form-control" placeholder="Success tooltip..." data-tooltip="Wahey! you did something right - this tooltip is happy about it" data-context="success" />
+					</div>
+					<div class="form-group">
+						<input type="text" class="form-control" placeholder="Warning tooltip..." data-tooltip="Uh oh - something you are doing doesn't seem quite right" data-context="warning"/>
+					</div>
+					<div class="form-group">
+						<input type="text" class="form-control" placeholder="Error tooltip..." data-tooltip="Oh snap! Something went wrong!" data-context="error" />
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="well">
+					<h3>Alignment</h3>
+					<p>Tooltips can be aligned to the top, left, right or beneath the target element, try passing <code>{align: 'top|left|right|bottom'}</code> to change the alignment. If no align option is passed, the default alignment is above the element.</p>
+					<div class="form-group">
+						<input type="text" class="form-control" data-align="top" placeholder="Align top..." data-tooltip="This tooltip is top aligned" />
+					</div>
+					<div class="form-group">
+						<input type="text" class="form-control" data-align="left" placeholder="Align left..." data-tooltip="This tooltip is aligned to the left"/>
+					</div>
+					<div class="form-group">
+						<input type="text" class="form-control" data-align="right" placeholder="Align right..." data-tooltip="This tooltip is right-aligned" />
+					</div>
+					<div class="form-group">
+						<input type="text" class="form-control" data-align="bottom" placeholder="Align bottom..." data-tooltip="This tooltip is beneath the element"/>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="well">
+			<h3>Triggers &amp; Events</h3>
+			<div class="panel panel-default">
+				<div class="panel-body" id="default-triggers">
+					<h4>Default triggers</h4>
+					<a class="btn btn-primary btn-lg" data-tooltip="I take 600ms to appear and disappear" data-speed="600" data-align="top">Slow animation</a>
+					<a class="btn btn-warning btn-lg" data-tooltip="I take 200ms to appear and disappear" data-speed="200" data-context="warning" data-align="bottom">Fast animation</a>
+					<a class="btn btn-success btn-lg" data-tooltip="I dont mess about, if you need help fast, here I am." data-speed="0" data-align="top" data-context="success">No animation</a>
+					<a class="btn btn-primary btn-lg" data-tooltip="Well done, you clicked the button! I will disappear in 3 seconds (unless you get rid of me before)" data-timeout="3000" data-align="bottom" data-context="info">Timeout</a>
+					<a class="btn btn-danger btn-lg" data-tooltip="Hey! I'm important and will cause any other tooltip on the page to disappear! Try it by using the 'toggle' example then this one." data-interrupt="true" data-context="error" data-align="top">Interrupt</a>
+					<a class="btn btn-primary btn-lg" data-tooltip="I need some feedback, let me know if you want to continue what you were doing" data-feedback="true" data-align="bottom" data-context="info">Confirmation needed</a>
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-body" id="custom-triggers">
+					<h4>Custom triggers</h4>
+					<a class="btn btn-primary btn-lg" data-trigger="click" data-exit="click" data-tooltip="Click the button again to see me disappear">Toggle Me</a>
+					<a class="btn btn-primary btn-lg" data-trigger="mouseenter" data-exit="mouseleave" data-tooltip="I will show on mouseenter and disappear on mouseleave" data-align="bottom">Hover Over Me</a>
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-body" id="data-attributes">
+					<h4>Passing jQuery elements</h4>
+					<a class="btn btn-primary btn-lg" data-tooltip="This has been passed from the html element" data-align="right" data-context="success">Click Me</a>
+				</div>
+			</div>
+		</div>
+		<div class="well">
+			<h3>Installation &amp; Usage</h3>
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<h4>Installation</h4>
+					<p>Backbone Tooltip can be installed using <a href="http://bower.io" target="_blank">Bower</a></p>
+					<pre>$ bower install backbone-tooltip --save</pre>
+					<p>Or you can clone the GitHub repository</p>
+					<pre>$ git clone git@github.com:joefitter/backbone-tooltip.git</pre>
+					<p>Once you have downloaded the repository into your project you can use RequireJS to include the main JS file <code>src/backbone-tooltip.amd.js</code> in any of your AMD modules.</p>
+					<p>You will also need to include the css file <code>src/backbone-tooltip.css</code> in the head of any page that the Tooltip will be used on. You can override any tooltip colours to suit your project by including <a href="css/template.css">this css</a> somewhere after the Backbone Tooltip stylesheet in the markup. Find and replace the comments to insert your chosen colours.</p>
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<h4>Usage</h4>
+					<p>A Backbone Tooltip can be instantiated by either passing an options hash or a jQuery element. If you use an options hash a jQuery element must be passed as the <code>$el</code> or an error will be thrown.</p>
+					<p>The default behaviour is to specify trigger events using <a href="http://backbonejs.org/#Events" target="_blank">Backbone Events</a> in the parent view. When the event is fired create a <code>new Tooltip()</code> instance passing in an options hash or jQuery element object.</p>
+					<pre>new Tooltip({
+  target: $jQueryObject,
+  text: 'Hi there',
+  align: 'top'
+});
+
+//or
+
+new Tooltip($jqueryObject);</pre>
+					<p>The tooltip is faded out and destroyed if something other than the tooltip or target element is clicked or the Tab key is pressed.</p>
+					<h4>Custom Triggers</h4>
+					<p>To use custom triggers rather than Backbone events, instantiate a <code>new Tooltip()</code> for each tooltip element when the element is rendered and pass the options <code>trigger</code> and <code>exit</code> or <code>data-trigger</code> and <code>data-exit</code> if using attributes. Pass in the names of the events for the tooltip to listen to.</p>
+				</div>
+			</div>
+		</div>
+		<div class="well">
+			<h3>Options</h3>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<h4>Options hash</h4>
+							<p>The Backbone Tooltip can be instantiated by passing an options hash <code>new Tooltip(options)</code> The following options are supported</p>
+							<pre>{
+  $el: (jQuery element), // required
+  text: (String) message, // default ''
+  align: 'top|bottom|left|right', // default 'top'
+  context: 'info|success|warning|error', // default ''
+  timeout: (Integer) milliseconds, // default undefined
+  interrupt: (Boolean) interrupt, // default undefined
+  trigger: (String) event, // default undefined
+  exit: (String) event, // default undefined
+  speed: (Integer) milliseconds, // default 200
+  feedback: (Boolean) requireFeedback //default undefined
+}</pre>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<h4>Data-Attributes</h4>
+							<p>Options can be configured on each element using <code>HTML5</code> data-attributes. The following data-attributes are supported</p>
+							<pre>&lt;a href="#"
+  data-tooltip="This is the tooltip text"
+  data-align="top"
+  data-context="info"
+  data-timeout="3000"
+  data-interrupt="true"
+  data-trigger="click"
+  data-exit="click"
+  data-speed="200"
+  data-feedback="true"&gt;Click Me
+&lt;/a&gt;
+
+</pre>					
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

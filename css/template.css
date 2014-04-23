@@ -1,0 +1,55 @@
+.tooltip, .tooltip.info {
+  background-color: /*default backbround colour*/;
+  border-color: /*default border colour*/;
+  color: /*default text colour*/;
+}
+div.tooltip.success {
+  background-color: /*success background colour*/;
+  border-color: /*success border colour*/;
+  color: /*success text colour*/;
+}
+div.tooltip.warning {
+  background-color: /*warning background colour*/;
+  border-color:/*warning border colour*/;
+  color:/*warning text colour*/;
+}
+div.tooltip.error {
+  background-color:/*error background colour*/;
+  border-color:/*error border colour*/;
+  color:/*error text colour*/;
+}
+.tooltip.align-top .arrow {border-top-color: /*default border colour*/}
+.tooltip.align-top .arrow:after {border-top-color: /*default background colour*/}
+.tooltip.align-right .arrow {border-right-color: /*default border colour*/}
+.tooltip.align-right .arrow:after {border-right-color: /*default background colour*/}
+.tooltip.align-left .arrow {border-left-color: /*default border colour*/}
+.tooltip.align-left .arrow:after {border-left-color: /*default background colour*/}
+.tooltip.align-bottom .arrow {border-bottom-color: /*default border colour*/}
+.tooltip.align-bottom .arrow:after {border-bottom-color: /*default background colour*/}
+
+.tooltip.success.align-top .arrow {border-top-color: /*success border colour*/}
+.tooltip.success.align-top .arrow:after {border-top-color: /*success background colour*/}
+.tooltip.success.align-left .arrow {border-left-color: /*success border colour*/}
+.tooltip.success.align-left .arrow:after {border-left-color: /*success background colour*/}
+.tooltip.success.align-right .arrow {border-right-color: /*success border colour*/}
+.tooltip.success.align-right .arrow:after {border-right-color: /*success background colour*/}
+.tooltip.success.align-bottom .arrow {border-bottom-color: /*success border colour*/}
+.tooltip.success.align-bottom .arrow:after {border-bottom-color: /*success background colour*/}
+
+.tooltip.warning.align-top .arrow {border-top-color: /*warning border colour*/}
+.tooltip.warning.align-top .arrow:after {border-top-color: /*warning background colour*/}
+.tooltip.warning.align-left .arrow {border-left-color: /*warning border colour*/}
+.tooltip.warning.align-left .arrow:after {border-left-color: /*warning background colour*/}
+.tooltip.warning.align-right .arrow {border-right-color: /*warning border colour*/}
+.tooltip.warning.align-right .arrow:after {border-right-color: /*warning background colour*/}
+.tooltip.warning.align-bottom .arrow {border-bottom-color: /*warning border colour*/}
+.tooltip.warning.align-bottom .arrow:after {border-bottom-color: /*warning background colour*/}
+
+.tooltip.error.align-top .arrow {border-top-color: /*error border colour*/}
+.tooltip.error.align-top .arrow:after {border-top-color: /*error background colour*/}
+.tooltip.error.align-left .arrow {border-left-color: /*error border colour*/}
+.tooltip.error.align-left .arrow:after {border-left-color: /*error background colour*/}
+.tooltip.error.align-right .arrow {border-right-color: /*error border colour*/}
+.tooltip.error.align-right .arrow:after {border-right-color: /*error background colour*/}
+.tooltip.error.align-bottom .arrow {border-bottom-color: /*error border colour*/}
+.tooltip.error.align-bottom .arrow:after {border-bottom-color: /*error background colour*/}

@@ -1,0 +1,13 @@
+{
+  "name": "requirejs-mustache",
+  "homepage": "https://github.com/jfparadis/requirejs-mustache",
+  "_release": "967960075a",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "967960075a5735a986ef6063efa9477df59f9cd5"
+  },
+  "_source": "git://github.com/jfparadis/requirejs-mustache.git",
+  "_target": "*",
+  "_originalSource": "requirejs-mustache"
+}

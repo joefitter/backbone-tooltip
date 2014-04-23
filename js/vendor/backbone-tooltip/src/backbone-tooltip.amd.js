@@ -8,20 +8,29 @@ define([
     borderWidth: 2,
     arrowSize: 10,
     initialize: function(options) {
-      this.options = options || {};
+      if(options instanceof jQuery){
+        this.options = this.parseDataAttributes(options);
+      } else {
+        this.options = options || {};
+      }
+      if(!this.options.$el){
+        throw new Error('Tooltip needs a target element');
+        return;
+      }
+      this.options.speed = this.options.speed === undefined ? 200 : parseInt(this.options.speed, 10);
       var self = this,
-        currentTooltip = this.options.target.data('activeTooltip');
+        currentTooltip = this.options.$el.data('activeTooltip');
       if(currentTooltip){
         if(currentTooltip.options.interrupt) {
           return;
         }
         currentTooltip.destroy();
       }
-      this.options.target.data('activeTooltip', this);
+      this.options.$el.data('activeTooltip', this);
       this.id = this.options.id || null;
 
-      this.elemWidth = this.options.target.outerWidth();
-      this.elemHeight = this.options.target.outerHeight();
+      this.elemWidth = this.options.$el.outerWidth();
+      this.elemHeight = this.options.$el.outerHeight();
       
       this.options.rootElem = this.options.rootElem || $('body');
       this.options.moveUp = this.options.moveUp || 0;
@@ -32,8 +41,22 @@ define([
       } else {
         this.enterHandler = _.bind(this.show, this);
         this.exitHandler = _.bind(this.hide, this);
-        this.options.target.bind(this.options.trigger, this.enterHandler);
+        this.options.$el.bind(this.options.trigger, this.enterHandler);
       }
+    },
+    parseDataAttributes: function($el){
+      var ops = {};
+      ops.$el = $el;
+      ops.align = $el.attr('data-align');
+      ops.context = $el.attr('data-context');
+      ops.text = $el.attr('data-tooltip');
+      ops.timeout = $el.attr('data-timeout');
+      ops.interrupt = $el.attr('data-interrupt');
+      ops.trigger = $el.attr('data-trigger');
+      ops.exit = $el.attr('data-exit');
+      ops.feedback = $el.attr('data-feedback');
+      ops.speed = $el.attr('data-speed');
+      return ops;
     },
     events: {
       'click button.tooltip-confirm': 'confirmTooltip',
@@ -44,19 +67,20 @@ define([
       return false;
     },
     show: function(){
-      this.$el.stop().fadeIn(200);
+      this.$el.stop().fadeIn(this.options.speed);
       if(this.options.trigger){
-        this.options.target.unbind(this.options.trigger, this.enterHandler);
-        this.options.target.bind(this.options.exit, this.exitHandler);
+        this.options.$el.unbind(this.options.trigger, this.enterHandler);
+        this.options.$el.bind(this.options.exit, this.exitHandler);
       }
     },
     addEvents: function() {
+      var self = this;
       this.clickHandler = _.bind(this.clicked, this);
       this.keypressHandler = _.bind(this.keypressed, this);
       $(window).bind('mousedown', this.clickHandler);
       $(window).bind('keydown', this.keypressHandler);
       if (this.options.hoverTrigger) {
-        this.options.target.on('mouseleave', function(e) {
+        this.options.$el.on('mouseleave', function(e) {
           self.mouseLeaveHandler(e);
         });
         this.$el.on('mouseleave', function(e) {
@@ -68,16 +92,23 @@ define([
           return $(this).data('activeTooltip') !== undefined;
         });
         elems.each(function(i, item) {
-          if (item !== self.options.target.get(0)) {
-            if ($(item).data('activeTooltip')) {
-              $(item).data('activeTooltip').exit();
+          if (item !== self.options.$el.get(0)) {
+            var ttip;
+            if (ttip = $(item).data('activeTooltip')) {
+              if(ttip.options.trigger){
+                if(ttip.$el.is(':visible')){
+                  ttip.hide();
+                }
+              } else {
+                ttip.exit();  
+              }
             }
           }
         });
       }
     },
     clicked: function(e) {
-      var isTargetElem = this.options.target.get(0) === $(e.target).get(0) || this.options.target.find($(e.target)).length > 0,
+      var isTargetElem = this.options.$el.get(0) === $(e.target).get(0) || this.options.$el.find($(e.target)).length > 0,
         isTooltip = $(e.target).hasClass('tooltip') || $(e.target).parents('.tooltip').length > 0 || false;
       if (!isTargetElem && !isTooltip) {
         this.exit();
@@ -85,7 +116,7 @@ define([
     },
     mouseLeaveHandler: function(e) {
       var isTooltip = $(e.toElement).get(0) === this.$el.get(0) || this.$el.find($(e.toElement)).length > 0 || false,
-        isTargetElem = this.options.target.get(0) === $(e.toElement).get(0) || this.options.target.find($(e.toElement)).length > 0 || false;
+        isTargetElem = this.options.$el.get(0) === $(e.toElement).get(0) || this.options.$el.find($(e.toElement)).length > 0 || false;
       if (!isTargetElem && !isTooltip) {
         this.exit();
       }
@@ -101,8 +132,8 @@ define([
         <span><%= options.text %></span>\
         <% if(options.feedback) { %>\
           <div class="feedback-buttons">\
-              <button class="btn btn-secondary tooltip-confirm">Yes</button>\
-              <button class="btn btn-secondary tooltip-deny">No</button>\
+              <button class="btn btn-primary tooltip-confirm">Yes</button>\
+              <button class="btn btn-primary tooltip-deny">No</button>\
           </div>\
         <% } %>')(this));
       this.options.rootElem.append(this.el);
@@ -125,7 +156,7 @@ define([
     positionSelf: function() {
       var rootElemOffset = this.options.rootElem.offset(),
         scrollTop = this.options.rootElem.prop('tagName') === "BODY" ? 0 : this.options.rootElem.get(0).scrollTop,
-        pos = this.options.target.offset();
+        pos = this.options.$el.offset();
       pos.top = pos.top - rootElemOffset.top + scrollTop;
       pos.left = pos.left - rootElemOffset.left;
       switch (this.options.align) {
@@ -153,28 +184,27 @@ define([
     },
     exit: function() {
       var self = this;
-      this.$el.fadeOut(200, function() {
+      this.$el.fadeOut(this.options.speed, function() {
         self.destroy();
       });
       return false;
     },
     hide: function(){
-      console.log('bye');
-      this.$el.stop().fadeOut(200);
+      this.$el.stop().fadeOut(this.options.speed);
       if(this.options.trigger){
-        this.options.target.unbind(this.options.exit, this.exitHandler);
-        this.options.target.bind(this.options.trigger, this.enterHandler);
+        this.options.$el.unbind(this.options.exit, this.exitHandler);
+        this.options.$el.bind(this.options.trigger, this.enterHandler);
       }
     },
     destroy: function() {
       this.undelegateEvents();
-      this.options.target.data('activeTooltip', null);
+      this.options.$el.data('activeTooltip', null);
       $(window).unbind('click', this.clickHandler);
       $(window).unbind('keydown', this.keypressHandler);
-      this.options.target.off('mouseleave');
+      this.options.$el.off('mouseleave');
       if(this.options.trigger){
-        this.options.target.unbind(this.options.exit, this.exitHandler);
-        this.options.target.unbind(this.options.trigger, this.enterHandler);
+        this.options.$el.unbind(this.options.exit, this.exitHandler);
+        this.options.$el.unbind(this.options.trigger, this.enterHandler);
       }
       this.$el.off('mouseleave');
       this.$el.removeData().unbind();
@@ -183,7 +213,7 @@ define([
     },
     addClasses: function() {
       var type, align;
-      switch (this.options.type) {
+      switch (this.options.context) {
         case 'info':
           type = 'info';
           break;

@@ -2,35 +2,28 @@ requirejs.config({
   paths: {
     'backbone': 'vendor/backbone/backbone',
     'underscore': 'vendor/underscore/underscore',
-    'jquery': 'vendor/jquery/dist/jquery'
+    'jquery': 'vendor/jquery/dist/jquery',
+    'stache': 'vendor/requirejs-mustache/stache',
+    'text': 'vendor/requirejs-text/text',
+    'mustache': 'vendor/mustache/mustache'
+  },
+  stache: {
+    extension: '.template',
+    path: '../templates/'
   }
-})
+});
 
-define([
-	'vendor/backbone-tooltip/src/backbone-tooltip.amd'
+require([
+  'BaseView'
 ], function(
-  Tooltip
+  BaseView
 ){
   'use strict';
 
   $(function(){
-    $('input[type=text]').focus(function(){
-      var $this = $(this);
-      new Tooltip({
-        target: $this,
-        text: $this.attr('data-tooltip'),
-        align: $this.attr('data-align'),
-        type: $this.attr('data-context')
-      });
+    var baseView = new BaseView({
+      el: $('#root-element')
     });
-    $('a[data-trigger]').each(function(){
-      var $this = $(this);
-      new Tooltip({
-        target: $this,
-        type: 'success',
-        trigger: $this.attr('data-trigger'),
-        exit: $this.attr('data-exit')
-      });
-    });
+    baseView.render();
   });
 });

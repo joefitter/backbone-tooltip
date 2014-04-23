@@ -1,3 +1,7 @@
-.well pre {
+.well pre:not(.panel-body > pre) {
 	background-color: white
+}
+
+.btn {
+	margin-top:10px;
 }
