@@ -18,14 +18,39 @@ define([
         currentTooltip.destroy();
       }
       this.options.target.data('activeTooltip', this);
-      
       this.id = this.options.id || null;
+
       this.elemWidth = this.options.target.outerWidth();
       this.elemHeight = this.options.target.outerHeight();
       
       this.options.rootElem = this.options.rootElem || $('body');
       this.options.moveUp = this.options.moveUp || 0;
       this.render();
+      if(!this.options.trigger){
+        this.addEvents();
+        this.show();
+      } else {
+        this.enterHandler = _.bind(this.show, this);
+        this.exitHandler = _.bind(this.hide, this);
+        this.options.target.bind(this.options.trigger, this.enterHandler);
+      }
+    },
+    events: {
+      'click button.tooltip-confirm': 'confirmTooltip',
+      'click button.tooltip-deny': 'exit'
+    },
+    confirmTooltip: function() {
+      this.trigger('confirmed', this);
+      return false;
+    },
+    show: function(){
+      this.$el.stop().fadeIn(200);
+      if(this.options.trigger){
+        this.options.target.unbind(this.options.trigger, this.enterHandler);
+        this.options.target.bind(this.options.exit, this.exitHandler);
+      }
+    },
+    addEvents: function() {
       this.clickHandler = _.bind(this.clicked, this);
       this.keypressHandler = _.bind(this.keypressed, this);
       $(window).bind('mousedown', this.clickHandler);
@@ -51,14 +76,6 @@ define([
         });
       }
     },
-    events: {
-      'click button.tooltip-confirm': 'confirmTooltip',
-      'click button.tooltip-deny': 'exit'
-    },
-    confirmTooltip: function() {
-      this.trigger('confirmed', this);
-      return false;
-    },
     clicked: function(e) {
       var isTargetElem = this.options.target.get(0) === $(e.target).get(0) || this.options.target.find($(e.target)).length > 0,
         isTooltip = $(e.target).hasClass('tooltip') || $(e.target).parents('.tooltip').length > 0 || false;
@@ -81,17 +98,16 @@ define([
     render: function() {
       var self = this;
       this.$el.html(_.template('<div class="arrow"></div>\
-        <span><%= text %></span>\
-        <% if(feedback) { %>\
+        <span><%= options.text %></span>\
+        <% if(options.feedback) { %>\
           <div class="feedback-buttons">\
               <button class="btn btn-secondary tooltip-confirm">Yes</button>\
               <button class="btn btn-secondary tooltip-deny">No</button>\
           </div>\
-        <% } %>')(this.options));
+        <% } %>')(this));
       this.options.rootElem.append(this.el);
       this.addClasses();
       this.getSize();
-      this.$el.fadeIn(400);
       if (this.options.timeout) {
         setTimeout(function() {
           self.exit();
@@ -108,7 +124,7 @@ define([
     },
     positionSelf: function() {
       var rootElemOffset = this.options.rootElem.offset(),
-        scrollTop = this.options.rootElem.get(0).scrollTop + this.options.moveUp,
+        scrollTop = this.options.rootElem.prop('tagName') === "BODY" ? 0 : this.options.rootElem.get(0).scrollTop,
         pos = this.options.target.offset();
       pos.top = pos.top - rootElemOffset.top + scrollTop;
       pos.left = pos.left - rootElemOffset.left;
@@ -122,8 +138,12 @@ define([
           pos.left = pos.left + this.elemWidth + this.arrowSize;
           break;
         case 'bottom':
+          pos.top = pos.top + this.elemHeight + this.arrowSize;
+          pos.left = pos.left - ((this.width - this.elemWidth) / 2);
           break;
         case 'left':
+          pos.top = pos.top - ((this.height - this.elemHeight) / 2);
+          pos.left = pos.left - this.width - this.arrowSize;
           break;
         default:
           pos.top = pos.top - this.height - this.arrowSize;
@@ -133,10 +153,18 @@ define([
     },
     exit: function() {
       var self = this;
-      this.$el.fadeOut(400, function() {
+      this.$el.fadeOut(200, function() {
         self.destroy();
       });
       return false;
+    },
+    hide: function(){
+      console.log('bye');
+      this.$el.stop().fadeOut(200);
+      if(this.options.trigger){
+        this.options.target.unbind(this.options.exit, this.exitHandler);
+        this.options.target.bind(this.options.trigger, this.enterHandler);
+      }
     },
     destroy: function() {
       this.undelegateEvents();
@@ -144,6 +172,10 @@ define([
       $(window).unbind('click', this.clickHandler);
       $(window).unbind('keydown', this.keypressHandler);
       this.options.target.off('mouseleave');
+      if(this.options.trigger){
+        this.options.target.unbind(this.options.exit, this.exitHandler);
+        this.options.target.unbind(this.options.trigger, this.enterHandler);
+      }
       this.$el.off('mouseleave');
       this.$el.removeData().unbind();
       this.remove();
@@ -170,19 +202,19 @@ define([
       this.$el.addClass(type);
       switch (this.options.align) {
         case 'top':
-          align = 'bottom-arrow';
+          align = 'align-top';
           break;
         case 'right':
-          align = 'left-arrow';
+          align = 'align-right';
           break;
         case 'bottom':
-          align = 'top-arrow';
+          align = 'align-bottom';
           break;
         case 'left':
-          align = 'right-arrow';
+          align = 'align-left';
           break;
         default:
-          align = 'bottom-arrow';
+          align = 'align-top';
       }
       this.$el.addClass(align);
     }
