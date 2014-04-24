@@ -26,6 +26,7 @@ define([
         throw new Error('Tooltip needs a target element');
       }
       this.options.speed = this.options.speed === undefined ? 200 : parseInt(this.options.speed, 10);
+      this.options.animation = this.options.animation || 'fade';
       var currentTooltip = this.options.$el.data('activeTooltip');
       if (currentTooltip) {
         if (currentTooltip.options.interrupt) {
@@ -63,6 +64,7 @@ define([
       ops.exit = $el.attr('data-exit');
       ops.feedback = $el.attr('data-feedback');
       ops.speed = $el.attr('data-speed');
+      ops.animation = $el.attr('data-animation');
       return ops;
     },
     events: {
@@ -74,10 +76,69 @@ define([
       return false;
     },
     show: function() {
-      this.$el.stop().fadeIn(this.options.speed);
+      this.animate(true);
       if (this.options.trigger) {
         this.options.$el.unbind(this.options.trigger, this.enterHandler);
         this.options.$el.bind(this.options.exit, this.exitHandler);
+      }
+    },
+    hide: function() {
+      this.animate();
+      if (this.options.trigger) {
+        this.options.$el.unbind(this.options.exit, this.exitHandler);
+        this.options.$el.bind(this.options.trigger, this.enterHandler);
+      }
+    },
+    animate: function(enter, callback){
+      callback = callback || function(){};
+      var boundCallback = _.bind(callback, this);
+      this.$el.stop();
+      switch(this.options.animation){
+        case 'fade':
+        if(enter){
+            return this.$el.fadeIn(this.options.speed, boundCallback);
+        }
+        return this.$el.fadeOut(this.options.speed, boundCallback);
+        case 'slide':
+        if(this.options.align === 'top' || this.options.align === 'bottom'){
+          if(enter){
+            return this.$el.slideDown(this.options.speed, boundCallback);
+          }
+          return this.$el.slideUp(this.options.speed, boundCallback);
+        }
+        if(this.options.align === 'right'){
+          var right = this.options.rootElem.width() - (this.pos.left + this.width);
+          this.$el.css({left: 'auto', right: right});
+        }
+        return this.$el.animate({width: 'toggle'}, this.options.speed, boundCallback);
+        case 'slidefade':
+        var start = {}, end = {};
+        switch(this.options.align){
+          case 'top':
+          start.top = this.pos.top - 10;
+          end.top = this.pos.top;
+          break;
+          case 'bottom':
+          start.top = this.pos.top + 10;
+          end.top = this.pos.top;
+          break;
+          case 'left':
+          start.left = this.pos.left - 10;
+          end.left = this.pos.left;
+          break;
+          case 'right':
+          start.left = this.pos.left + 10;
+          end.left = this.pos.left;
+          break;
+          default:
+          start.top = this.pos.top - 10;
+          end.top = this.pos.top;
+        }
+        if(enter){
+          return this.$el.css(_.extend({display: 'block', opacity: 0}, start))
+            .animate(_.extend({opacity: 1}, end), this.options.speed, boundCallback);
+        }
+        return this.$el.animate(_.extend({opacity: 0}, start), this.options.speed, boundCallback);
       }
     },
     addEvents: function() {
@@ -136,10 +197,10 @@ define([
     render: function() {
       var self = this,
         template = '<div class="arrow"></div>';
-      template += '<span><%= options.text %></span>';
+      template += '<div class="tooltip-text-wrapper"><span><%= options.text %></span></div>';
       template += '<% if(options.feedback) { %>';
       template += '<div class="feedback-buttons">';
-      template += '<button class="btn btn-primary tooltip-confirm">Yes</button>';
+      template += '<button class="btn btn-primary tooltip-confirm">Yes</button> ';
       template += '<button class="btn btn-primary tooltip-deny">No</button>';
       template += '</div>';
       template += '<% } %>';
@@ -147,6 +208,7 @@ define([
       this.options.rootElem.append(this.el);
       this.addClasses();
       this.getSize();
+      $('div.tooltip-text-wrapper', this.el).outerWidth(this.width - (2 * parseInt(this.$el.css('padding'))) - 2 * this.borderWidth);
       if (this.options.timeout) {
         setTimeout(function() {
           self.exit();
@@ -189,20 +251,11 @@ define([
           pos.left = pos.left - ((this.width - this.elemWidth) / 2);
       }
       this.$el.css(pos);
+      this.pos = pos;
     },
     exit: function() {
-      var self = this;
-      this.$el.fadeOut(this.options.speed, function() {
-        self.destroy();
-      });
+      this.animate(false, this.destroy);
       return false;
-    },
-    hide: function() {
-      this.$el.stop().fadeOut(this.options.speed);
-      if (this.options.trigger) {
-        this.options.$el.unbind(this.options.exit, this.exitHandler);
-        this.options.$el.bind(this.options.trigger, this.enterHandler);
-      }
     },
     destroy: function() {
       this.undelegateEvents();
