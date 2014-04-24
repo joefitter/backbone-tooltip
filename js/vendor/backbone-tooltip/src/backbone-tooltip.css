@@ -85,22 +85,22 @@ body {
   top:-8px;
 }
 
-div.tooltip.error > span:before {
+div.tooltip.error span:before {
     content: "Error: ";
     font-weight: bold;
 }
 
-div.tooltip.info > span:before {
+div.tooltip.info span:before {
     content: "Info: ";
     font-weight: bold;
 }
 
-div.tooltip.success > span:before {
+div.tooltip.success span:before {
     content: "Success: ";
     font-weight: bold;
 }
 
-div.tooltip.warning > span:before {
+div.tooltip.warning span:before {
     content: "Warning: ";
     font-weight: bold;
 }

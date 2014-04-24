@@ -50,6 +50,14 @@
 					<a class="btn btn-primary btn-lg" data-tooltip="Well done, you clicked the button! I will disappear in 3 seconds (unless you get rid of me before)" data-timeout="3000" data-align="bottom" data-context="info">Timeout</a>
 					<a class="btn btn-danger btn-lg" data-tooltip="Hey! I'm important and will cause any other tooltip on the page to disappear! Try it by using the 'toggle' example then this one." data-interrupt="true" data-context="error" data-align="top">Interrupt</a>
 					<a class="btn btn-primary btn-lg" data-tooltip="I need some feedback, let me know if you want to continue what you were doing" data-feedback="true" data-align="bottom" data-context="info">Confirmation needed</a>
+					<a class="btn btn-success btn-lg" data-tooltip="I can animate in different ways" data-animation="slide" data-align="top" data-context="success">Slide Toggle</a>
+					<a class="btn btn-primary btn-lg" data-tooltip="You can combine speed and animation options" data-animation="slide" data-speed="600" data-align="top" data-context="info">Slide Toggle</a>
+					<a class="btn btn-primary btn-lg" data-tooltip="I will slide in from the side" data-animation="slide" data-align="left" data-context="info">Side Slide</a>
+					<a class="btn btn-success btn-lg" data-tooltip="I will slide in from the other side" data-animation="slide" data-align="right" data-context="success">Other Side</a>
+					<a class="btn btn-primary btn-lg" data-tooltip="I slide down while fading in!" data-animation="slidefade" data-align="top" data-context="info">Slide Fade Top</a>
+					<a class="btn btn-success btn-lg" data-tooltip="I slide up while fading in!" data-animation="slidefade" data-align="bottom" data-context="success">Slide Fade Bottom</a>
+					<a class="btn btn-warning btn-lg" data-tooltip="I slide in from the left while fading in!" data-animation="slidefade" data-align="left" data-context="warning">Slide Fade Left</a>
+					<a class="btn btn-danger btn-lg" data-tooltip="I slide in from the right while fading in!" data-animation="slidefade" data-align="right" data-context="error">Slide Fade Right</a>
 				</div>
 			</div>
 			<div class="panel panel-default">

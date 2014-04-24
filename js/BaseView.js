@@ -32,6 +32,12 @@ define([
     showJqueryTooltip: function(event){
       var $el = $(event.target);
       var tooltip = new Tooltip($el);
+      if($el.attr('data-feedback')){
+        this.listenTo(tooltip, 'confirmed', function(){
+          window.alert('ok!');
+          tooltip.exit();
+        });
+      }
     },
     showTooltip: function($el){
       var tooltip = new Tooltip({
@@ -44,7 +50,8 @@ define([
         exit: $el.attr('data-exit'),
         speed: $el.attr('data-speed'),
         interrupt: $el.attr('data-interrupt'),
-        feedback: $el.attr('data-feedback')
+        feedback: $el.attr('data-feedback'),
+        animation: $el.attr('data-animation')
       });
       if($el.attr('data-feedback')){
         this.listenTo(tooltip, 'confirmed', function(){

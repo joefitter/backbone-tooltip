@@ -1,27 +1,35 @@
+/*global _,define*/
+/*jshint strict:false*/
+
 define([
+  'jquery',
   'backbone'
 ], function(
+  $,
   Backbone
 ) {
+
+  /* leaving out use strict statement so
+     can be included in non-strict modules */
+
   return Backbone.View.extend({
     className: 'tooltip',
     borderWidth: 2,
     arrowSize: 10,
     initialize: function(options) {
-      if(options instanceof jQuery){
+      if (options instanceof $) {
         this.options = this.parseDataAttributes(options);
       } else {
         this.options = options || {};
       }
-      if(!this.options.$el){
+      if (!this.options.$el) {
         throw new Error('Tooltip needs a target element');
-        return;
       }
       this.options.speed = this.options.speed === undefined ? 200 : parseInt(this.options.speed, 10);
-      var self = this,
-        currentTooltip = this.options.$el.data('activeTooltip');
-      if(currentTooltip){
-        if(currentTooltip.options.interrupt) {
+      this.options.animation = this.options.animation || 'fade';
+      var currentTooltip = this.options.$el.data('activeTooltip');
+      if (currentTooltip) {
+        if (currentTooltip.options.interrupt) {
           return;
         }
         currentTooltip.destroy();
@@ -31,11 +39,11 @@ define([
 
       this.elemWidth = this.options.$el.outerWidth();
       this.elemHeight = this.options.$el.outerHeight();
-      
+
       this.options.rootElem = this.options.rootElem || $('body');
       this.options.moveUp = this.options.moveUp || 0;
       this.render();
-      if(!this.options.trigger){
+      if (!this.options.trigger) {
         this.addEvents();
         this.show();
       } else {
@@ -44,7 +52,7 @@ define([
         this.options.$el.bind(this.options.trigger, this.enterHandler);
       }
     },
-    parseDataAttributes: function($el){
+    parseDataAttributes: function($el) {
       var ops = {};
       ops.$el = $el;
       ops.align = $el.attr('data-align');
@@ -56,6 +64,7 @@ define([
       ops.exit = $el.attr('data-exit');
       ops.feedback = $el.attr('data-feedback');
       ops.speed = $el.attr('data-speed');
+      ops.animation = $el.attr('data-animation');
       return ops;
     },
     events: {
@@ -66,11 +75,70 @@ define([
       this.trigger('confirmed', this);
       return false;
     },
-    show: function(){
-      this.$el.stop().fadeIn(this.options.speed);
-      if(this.options.trigger){
+    show: function() {
+      this.animate(true);
+      if (this.options.trigger) {
         this.options.$el.unbind(this.options.trigger, this.enterHandler);
         this.options.$el.bind(this.options.exit, this.exitHandler);
+      }
+    },
+    hide: function() {
+      this.animate();
+      if (this.options.trigger) {
+        this.options.$el.unbind(this.options.exit, this.exitHandler);
+        this.options.$el.bind(this.options.trigger, this.enterHandler);
+      }
+    },
+    animate: function(enter, callback){
+      callback = callback || function(){};
+      var boundCallback = _.bind(callback, this);
+      this.$el.stop();
+      switch(this.options.animation){
+        case 'fade':
+        if(enter){
+            return this.$el.fadeIn(this.options.speed, boundCallback);
+        }
+        return this.$el.fadeOut(this.options.speed, boundCallback);
+        case 'slide':
+        if(this.options.align === 'top' || this.options.align === 'bottom'){
+          if(enter){
+            return this.$el.slideDown(this.options.speed, boundCallback);
+          }
+          return this.$el.slideUp(this.options.speed, boundCallback);
+        }
+        if(this.options.align === 'right'){
+          var right = this.options.rootElem.width() - (this.pos.left + this.width);
+          this.$el.css({left: 'auto', right: right});
+        }
+        return this.$el.animate({width: 'toggle'}, this.options.speed, boundCallback);
+        case 'slidefade':
+        var start = {}, end = {};
+        switch(this.options.align){
+          case 'top':
+          start.top = this.pos.top - 10;
+          end.top = this.pos.top;
+          break;
+          case 'bottom':
+          start.top = this.pos.top + 10;
+          end.top = this.pos.top;
+          break;
+          case 'left':
+          start.left = this.pos.left - 10;
+          end.left = this.pos.left;
+          break;
+          case 'right':
+          start.left = this.pos.left + 10;
+          end.left = this.pos.left;
+          break;
+          default:
+          start.top = this.pos.top - 10;
+          end.top = this.pos.top;
+        }
+        if(enter){
+          return this.$el.css(_.extend({display: 'block', opacity: 0}, start))
+            .animate(_.extend({opacity: 1}, end), this.options.speed, boundCallback);
+        }
+        return this.$el.animate(_.extend({opacity: 0}, start), this.options.speed, boundCallback);
       }
     },
     addEvents: function() {
@@ -93,14 +161,14 @@ define([
         });
         elems.each(function(i, item) {
           if (item !== self.options.$el.get(0)) {
-            var ttip;
-            if (ttip = $(item).data('activeTooltip')) {
-              if(ttip.options.trigger){
-                if(ttip.$el.is(':visible')){
+            var ttip = $(item).data('activeTooltip');
+            if (ttip) {
+              if (ttip.options.trigger) {
+                if (ttip.$el.is(':visible')) {
                   ttip.hide();
                 }
               } else {
-                ttip.exit();  
+                ttip.exit();
               }
             }
           }
@@ -127,18 +195,21 @@ define([
       }
     },
     render: function() {
-      var self = this;
-      this.$el.html(_.template('<div class="arrow"></div>\
-        <span><%= options.text %></span>\
-        <% if(options.feedback) { %>\
-          <div class="feedback-buttons">\
-              <button class="btn btn-primary tooltip-confirm">Yes</button>\
-              <button class="btn btn-primary tooltip-deny">No</button>\
-          </div>\
-        <% } %>')(this));
+      var self = this,
+        template = '<div class="arrow"></div>';
+      template += '<div class="tooltip-text-wrapper"><span><%= options.text %></span></div>';
+      template += '<% if(options.feedback) { %>';
+      template += '<div class="feedback-buttons">';
+      template += '<button class="btn btn-primary tooltip-confirm">Yes</button> ';
+      template += '<button class="btn btn-primary tooltip-deny">No</button>';
+      template += '</div>';
+      template += '<% } %>';
+      this.$el.html(_.template(template)(this));
       this.options.rootElem.append(this.el);
       this.addClasses();
       this.getSize();
+      console.log();
+      $('div.tooltip-text-wrapper', this.el).outerWidth(this.width - (2 * parseInt(this.$el.css('padding'))) - 2 * this.borderWidth);
       if (this.options.timeout) {
         setTimeout(function() {
           self.exit();
@@ -155,7 +226,7 @@ define([
     },
     positionSelf: function() {
       var rootElemOffset = this.options.rootElem.offset(),
-        scrollTop = this.options.rootElem.prop('tagName') === "BODY" ? 0 : this.options.rootElem.get(0).scrollTop,
+        scrollTop = this.options.rootElem.prop('tagName') === 'BODY' ? 0 : this.options.rootElem.get(0).scrollTop,
         pos = this.options.$el.offset();
       pos.top = pos.top - rootElemOffset.top + scrollTop;
       pos.left = pos.left - rootElemOffset.left;
@@ -181,20 +252,12 @@ define([
           pos.left = pos.left - ((this.width - this.elemWidth) / 2);
       }
       this.$el.css(pos);
+      this.pos = pos;
     },
     exit: function() {
       var self = this;
-      this.$el.fadeOut(this.options.speed, function() {
-        self.destroy();
-      });
+      this.animate(false, self.destroy);
       return false;
-    },
-    hide: function(){
-      this.$el.stop().fadeOut(this.options.speed);
-      if(this.options.trigger){
-        this.options.$el.unbind(this.options.exit, this.exitHandler);
-        this.options.$el.bind(this.options.trigger, this.enterHandler);
-      }
     },
     destroy: function() {
       this.undelegateEvents();
@@ -202,7 +265,7 @@ define([
       $(window).unbind('click', this.clickHandler);
       $(window).unbind('keydown', this.keypressHandler);
       this.options.$el.off('mouseleave');
-      if(this.options.trigger){
+      if (this.options.trigger) {
         this.options.$el.unbind(this.options.exit, this.exitHandler);
         this.options.$el.unbind(this.options.trigger, this.enterHandler);
       }
