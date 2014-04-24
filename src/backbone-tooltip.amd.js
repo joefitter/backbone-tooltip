@@ -1,9 +1,11 @@
-/*global _*/
+/*global _,define*/
 /*jshint strict:false*/
 
 define([
+  'jquery',
   'backbone'
 ], function(
+  $,
   Backbone
 ) {
 
@@ -15,7 +17,7 @@ define([
     borderWidth: 2,
     arrowSize: 10,
     initialize: function(options) {
-      if (options instanceof jQuery) {
+      if (options instanceof $) {
         this.options = this.parseDataAttributes(options);
       } else {
         this.options = options || {};
