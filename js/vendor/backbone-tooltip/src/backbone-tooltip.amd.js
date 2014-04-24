@@ -208,7 +208,6 @@ define([
       this.options.rootElem.append(this.el);
       this.addClasses();
       this.getSize();
-      console.log();
       $('div.tooltip-text-wrapper', this.el).outerWidth(this.width - (2 * parseInt(this.$el.css('padding'))) - 2 * this.borderWidth);
       if (this.options.timeout) {
         setTimeout(function() {
@@ -255,8 +254,7 @@ define([
       this.pos = pos;
     },
     exit: function() {
-      var self = this;
-      this.animate(false, self.destroy);
+      this.animate(false, this.destroy);
       return false;
     },
     destroy: function() {
