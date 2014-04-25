@@ -32,7 +32,10 @@ define([
        * Check if a target element has been provided
        * and it is a jQuery object
        */
-      if (!this.options.$el || !this.options.$el instanceof $) {
+
+
+      if ((this.options.$el === undefined) || !(this.options.$el instanceof $)) {
+
         throw new Error('Tooltip needs a target element');
       }
 

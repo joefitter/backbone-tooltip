@@ -32,7 +32,7 @@ module.exports = function(grunt){
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-bower-task');
 
-  grunt.registerTask('devmode', ['karma:unit', 'watch']);
+  grunt.registerTask('testdev', ['karma:unit', 'watch']);
 
   grunt.registerTask('test', ['bower:install','karma:travis']);
 };

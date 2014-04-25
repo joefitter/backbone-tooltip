@@ -1,16 +1,22 @@
+/*global describe,expect,it*/
+
 define([
-  'jquery',
-  'underscore'
+  '../src/backbone-tooltip.amd.js'
 ], function(
-  $,
-  _
+  Tooltip
 ){
   'use strict';
 
-  describe('just checking', function() {
-    it('works for underscore', function(){
-      expect(true).toBe(true);
-      expect(_.size([1,2,3])).toEqual(3);
-    })
-  })
+  describe('Tooltip errors', function() {
+    it('should throw an error if not provided with any element or options', function(){
+      expect(function(){
+        new Tooltip();
+      }).toThrow(new Error('Tooltip need to be provided with a jQuery element object or options hash'));
+    });
+    it('should throw an error if $el is not a jQuery element', function(){
+      expect(function(){
+        new Tooltip({$el: {}});
+      }).toThrow(new Error('Tooltip needs a target element'));
+    });
+  });
 });
