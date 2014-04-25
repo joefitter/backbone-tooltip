@@ -18,13 +18,19 @@ module.exports = function(grunt){
         files: ['src/**/*.js', 'test/**/*.js'],
         tasks: ['karma:unit:run']
       }
+    },
+    bower: {
+      install: {
+
+      }
     }
   });
 
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-bower-task');
 
   grunt.registerTask('devmode', ['karma:unit', 'watch']);
 
-  grunt.registerTask('test', ['karma:travis']);
+  grunt.registerTask('test', ['bower:install','karma:travis']);
 };
