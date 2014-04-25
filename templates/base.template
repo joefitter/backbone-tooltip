@@ -1,6 +1,6 @@
-<div class="panel panel-default" style="margin-top:50px;">
+<h1>Backbone Tooltip</h1>
+<div class="panel panel-default">
 	<div class="panel-body">
-		<h2>Backbone Tooltip</h2>
 		<div class="row">
 			<div class="col-md-6">
 				<div class="well">
@@ -116,8 +116,9 @@ new Tooltip($jqueryObject);</pre>
 							<h4>Options hash</h4>
 							<p>The Backbone Tooltip can be instantiated by passing an options hash <code>new Tooltip(options)</code> The following options are supported</p>
 							<pre>{
-  $el: (jQuery element), // required
+  $el: (jQuery element) element, // required
   text: (String) message, // default ''
+  rootElem: (jQuery element) element, // default $('body')
   align: 'top|bottom|left|right', // default 'top'
   context: 'info|success|warning|error', // default ''
   timeout: (Integer) milliseconds, // default undefined
@@ -125,7 +126,10 @@ new Tooltip($jqueryObject);</pre>
   trigger: (String) event, // default undefined
   exit: (String) event, // default undefined
   speed: (Integer) milliseconds, // default 200
-  feedback: (Boolean) requireFeedback //default undefined
+  feedback: (Boolean) requireFeedback, // default undefined
+  animation: (String) 'fade|slide|slidefade', // default 'fade',
+  hoverTrigger: (Boolean) true|false, //default false
+  id: (String) id // default null
 }</pre>
 						</div>
 					</div>
@@ -144,6 +148,7 @@ new Tooltip($jqueryObject);</pre>
   data-trigger="click"
   data-exit="click"
   data-speed="200"
+  data-hovertrigger="false"
   data-feedback="true"&gt;Click Me
 &lt;/a&gt;
 

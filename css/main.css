@@ -5,3 +5,7 @@
 .btn {
 	margin-top:10px;
 }
+
+.mono {
+	font-family: 'Ubunto mono', 'courier new', courier, monospace;
+}
