@@ -14,19 +14,42 @@ define([
 
   return Backbone.View.extend({
     className: 'tooltip',
-    borderWidth: 2,
     arrowSize: 10,
     initialize: function(options) {
+      if (!options || typeof options !== 'object') {
+        throw new Error('Tooltip need to be provided with a jQuery element object or options hash');
+      }
+      /*
+       * Check if Tooltip was instantiated with
+       * a jQeury object or an options hash.
+       */
       if (options instanceof $) {
         this.options = this.parseDataAttributes(options);
       } else {
-        this.options = options || {};
+        this.options = options;
       }
-      if (!this.options.$el) {
+      /*
+       * Check if a target element has been provided
+       * and it is a jQuery object
+       */
+      if (!this.options.$el || !this.options.$el instanceof $) {
         throw new Error('Tooltip needs a target element');
       }
+
+      // If speed not specified, set to 200ms by default
       this.options.speed = this.options.speed === undefined ? 200 : parseInt(this.options.speed, 10);
+
+      // If animation not specified, set to 'fade' by default
       this.options.animation = this.options.animation || 'fade';
+
+      if(this.options.animation === 'slidefade'){
+        this.options.distance = this.options.distance || 10;
+      }
+
+      /*
+       * Check if target element already has an active tooltip
+       * and if so, remove it unless it is set to interrupt.
+       */
       var currentTooltip = this.options.$el.data('activeTooltip');
       if (currentTooltip) {
         if (currentTooltip.options.interrupt) {
@@ -34,28 +57,101 @@ define([
         }
         currentTooltip.destroy();
       }
+
+      /*
+       * Save reference to this active tooltip to
+       * jQuery target element.
+       */
       this.options.$el.data('activeTooltip', this);
+
+      // give Tooltip ID if provided
       this.id = this.options.id || null;
 
       this.elemWidth = this.options.$el.outerWidth();
       this.elemHeight = this.options.$el.outerHeight();
 
+      // Set rootElem to body if not specified
       this.options.rootElem = this.options.rootElem || $('body');
-      this.options.moveUp = this.options.moveUp || 0;
+
       this.render();
-      if (!this.options.trigger) {
-        this.addEvents();
-        this.show();
-      } else {
+
+      if (this.options.trigger) {
+        /*
+         * If custom trigger event provided
+         * listen for this and show when fired
+         * Bind 'this' to tooltip instance rather than
+         * default jQuery element.
+         */
         this.enterHandler = _.bind(this.show, this);
-        this.exitHandler = _.bind(this.hide, this);
         this.options.$el.bind(this.options.trigger, this.enterHandler);
+      } else {
+        /*
+         * If no trigger event provided then assume trigger
+         * event already fired in parent Backbone View so
+         * call show() method. (default behaviour)
+         */
+        this.show();
+      }
+
+      if (this.options.exit) {
+        /*
+         * If exit event provided, save reference
+         * of bound hide method. Doesn't actually
+         * listen for this event until show() method
+         * is fired.
+         */
+        this.exitHandler = _.bind(this.hide, this);
+      } else {
+        // Add default exit listener if none provided.
+        this.addDefaultExitListeners();
+      }
+
+      // Remove other tooltips if set to interrupt
+      if (this.options.interrupt) {
+        this.interruptTooltips();
       }
     },
+    interruptTooltips: function() {
+      var self = this,
+        elems = $('*').filter(function() {
+          return $(this).data('activeTooltip') !== undefined && $(this).get(0) !== self.options.$el.get(0);
+        });
+      /* 
+       * elems is a jQuery reference to all
+       * elements on page with an active tooltip
+       * except the current target element.
+       */
+      elems.each(function(i, item) {
+        // Reference to tooltip stored in element data()
+        var tooltip = $(item).data('activeTooltip');
+        if(tooltip){
+          if (tooltip.options.exit) {
+            if (tooltip.$el.is(':visible')) {
+              /* 
+               * If tooltip has custom exit event
+               * and is visible, hide it, else do
+               * nothing as already hidden.
+               */
+              tooltip.hide(true);
+            }
+          } else {
+            // remove tootlip;
+            tooltip.destroy();
+          }
+        }
+      });
+    },
     parseDataAttributes: function($el) {
+      /*
+       * allowed data-attributes will be
+       * set to the options hash, others
+       * will be ignored. Any missing
+       * will be set to undefined.
+       */
       var ops = {};
       ops.$el = $el;
       ops.align = $el.attr('data-align');
+      ops.id = $el.attr('data-id');
       ops.context = $el.attr('data-context');
       ops.text = $el.attr('data-tooltip');
       ops.timeout = $el.attr('data-timeout');
@@ -65,88 +161,151 @@ define([
       ops.feedback = $el.attr('data-feedback');
       ops.speed = $el.attr('data-speed');
       ops.animation = $el.attr('data-animation');
+      ops.hoverTrigger = $el.attr('data-hovertrigger');
       return ops;
     },
     events: {
       'click button.tooltip-confirm': 'confirmTooltip',
-      'click button.tooltip-deny': 'exit'
+      'click button.tooltip-deny': 'denyTooltip'
     },
     confirmTooltip: function() {
+      /*
+       * Parent view can listen for
+       * 'confirmed' event. tooltip instance is
+       * passed for convenience.
+       */
       this.trigger('confirmed', this);
       return false;
+    },
+    denyTooltip: function() {
+      // check for custom exit event listeners
+      if (this.options.exit) {
+        return this.hide();
+      }
+      return this.exit();
     },
     show: function() {
       this.animate(true);
       if (this.options.trigger) {
+        /*
+         * unbinding and rebinding allows for 
+         * same event to be used for show and hide
+         */
         this.options.$el.unbind(this.options.trigger, this.enterHandler);
+      }
+      if (this.options.exit) {
         this.options.$el.bind(this.options.exit, this.exitHandler);
       }
     },
-    hide: function() {
-      this.animate();
+    hide: function(instant) {
+      //if interrupted, tooltip should disppear instantly.
+      if (instant === true) {
+        this.$el.hide();
+      } else {
+        this.animate();
+      }
       if (this.options.trigger) {
-        this.options.$el.unbind(this.options.exit, this.exitHandler);
+        /*
+         * unbinding and rebinding allows for 
+         * same event to be used for show and hide
+         */
         this.options.$el.bind(this.options.trigger, this.enterHandler);
       }
-    },
-    animate: function(enter, callback){
-      callback = callback || function(){};
-      var boundCallback = _.bind(callback, this);
-      this.$el.stop();
-      switch(this.options.animation){
-        case 'fade':
-        if(enter){
-            return this.$el.fadeIn(this.options.speed, boundCallback);
-        }
-        return this.$el.fadeOut(this.options.speed, boundCallback);
-        case 'slide':
-        if(this.options.align === 'top' || this.options.align === 'bottom'){
-          if(enter){
-            return this.$el.slideDown(this.options.speed, boundCallback);
-          }
-          return this.$el.slideUp(this.options.speed, boundCallback);
-        }
-        if(this.options.align === 'right'){
-          var right = this.options.rootElem.width() - (this.pos.left + this.width);
-          this.$el.css({left: 'auto', right: right});
-        }
-        return this.$el.animate({width: 'toggle'}, this.options.speed, boundCallback);
-        case 'slidefade':
-        var start = {}, end = {};
-        switch(this.options.align){
-          case 'top':
-          start.top = this.pos.top - 10;
-          end.top = this.pos.top;
-          break;
-          case 'bottom':
-          start.top = this.pos.top + 10;
-          end.top = this.pos.top;
-          break;
-          case 'left':
-          start.left = this.pos.left - 10;
-          end.left = this.pos.left;
-          break;
-          case 'right':
-          start.left = this.pos.left + 10;
-          end.left = this.pos.left;
-          break;
-          default:
-          start.top = this.pos.top - 10;
-          end.top = this.pos.top;
-        }
-        if(enter){
-          return this.$el.css(_.extend({display: 'block', opacity: 0}, start))
-            .animate(_.extend({opacity: 1}, end), this.options.speed, boundCallback);
-        }
-        return this.$el.animate(_.extend({opacity: 0}, start), this.options.speed, boundCallback);
+      if (this.options.exit) {
+        this.options.$el.unbind(this.options.exit, this.exitHandler);
       }
     },
-    addEvents: function() {
+    animate: function(enter, callback) {
+      /*
+       * enter - is this an entry animation?
+       * callback - function to call when animation complete.
+       */
+      callback = callback || function() {};
+      var boundCallback = _.bind(callback, this);
+
+      //stop any current animations
+      this.$el.stop();
+
+      switch (this.options.animation) {
+        //default animation is fade
+        case 'fade':
+          if (enter) {
+            return this.$el.fadeIn(this.options.speed, boundCallback);
+          }
+          return this.$el.fadeOut(this.options.speed, boundCallback);
+        
+        case 'slide':
+          // if aligned top or bottom, slideUp and slideDown will work fine.
+          if (this.options.align === 'top' || this.options.align === 'bottom') {
+            if (enter) {
+              return this.$el.slideDown(this.options.speed, boundCallback);
+            }
+            return this.$el.slideUp(this.options.speed, boundCallback);
+          }
+
+          // if aligned right, change the css positioning from 'left' to 'right' anchored.
+          if (this.options.align === 'right') {
+            var right = this.options.rootElem.width() - (this.pos.left + this.width);
+            this.$el.css({
+              left: 'auto',
+              right: right
+            });
+          }
+          //animate width
+          return this.$el.animate({
+            width: 'toggle'
+          }, this.options.speed, boundCallback);
+        case 'slidefade':
+          // start and end position objects
+          var start = {}, end = {}, dist = this.options.distance; // default distance 10
+          switch (this.options.align) {
+            case 'top':
+              start.top = this.pos.top - dist;
+              end.top = this.pos.top;
+              break;
+            case 'bottom':
+              start.top = this.pos.top + dist;
+              end.top = this.pos.top;
+              break;
+            case 'left':
+              start.left = this.pos.left - dist;
+              end.left = this.pos.left;
+              break;
+            case 'right':
+              start.left = this.pos.left + dist;
+              end.left = this.pos.left;
+              break;
+            default:
+              start.top = this.pos.top - dist;
+              end.top = this.pos.top;
+          }
+          if (enter) {
+            return this.$el.css(_.extend({
+              display: 'block',
+              opacity: 0
+            }, start))
+              .animate(_.extend({
+                opacity: 1
+              }, end), this.options.speed, boundCallback);
+          }
+          return this.$el.animate(_.extend({
+            opacity: 0
+          }, start), this.options.speed, boundCallback);
+      }
+    },
+    addDefaultExitListeners: function() {
       var self = this;
+      //save references so events can be removed from window on destroy
       this.clickHandler = _.bind(this.clicked, this);
       this.keypressHandler = _.bind(this.keypressed, this);
-      $(window).bind('mousedown', this.clickHandler);
-      $(window).bind('keydown', this.keypressHandler);
+      $(window).on('click', this.clickHandler);
+      $(window).on('keydown', this.keypressHandler);
+
+      /*
+       * changes default exit event triggers
+       * - should be used if instantiated with
+       * mouseenter event
+       */
       if (this.options.hoverTrigger) {
         this.options.$el.on('mouseleave', function(e) {
           self.mouseLeaveHandler(e);
@@ -155,34 +314,18 @@ define([
           self.mouseLeaveHandler(e);
         });
       }
-      if (this.options.interrupt) {
-        var elems = $('*').filter(function() {
-          return $(this).data('activeTooltip') !== undefined;
-        });
-        elems.each(function(i, item) {
-          if (item !== self.options.$el.get(0)) {
-            var ttip = $(item).data('activeTooltip');
-            if (ttip) {
-              if (ttip.options.trigger) {
-                if (ttip.$el.is(':visible')) {
-                  ttip.hide();
-                }
-              } else {
-                ttip.exit();
-              }
-            }
-          }
-        });
-      }
     },
     clicked: function(e) {
+      // check if the click event was on the target element or the tooltip object
       var isTargetElem = this.options.$el.get(0) === $(e.target).get(0) || this.options.$el.find($(e.target)).length > 0,
         isTooltip = $(e.target).hasClass('tooltip') || $(e.target).parents('.tooltip').length > 0 || false;
       if (!isTargetElem && !isTooltip) {
+        //remove if the click was elsewhere
         this.exit();
       }
     },
     mouseLeaveHandler: function(e) {
+      // check if the mouse left both the tooltip and the target element. Exit if so. 
       var isTooltip = $(e.toElement).get(0) === this.$el.get(0) || this.$el.find($(e.toElement)).length > 0 || false,
         isTargetElem = this.options.$el.get(0) === $(e.toElement).get(0) || this.options.$el.find($(e.toElement)).length > 0 || false;
       if (!isTargetElem && !isTooltip) {
@@ -190,11 +333,13 @@ define([
       }
     },
     keypressed: function(e) {
+      // keyCode 9 = Tab
       if (e.keyCode === 9) {
         this.exit();
       }
     },
     render: function() {
+      //using _.template to reduce number of dependencies
       var self = this,
         template = '<div class="arrow"></div>';
       template += '<div class="tooltip-text-wrapper"><span><%= options.text %></span></div>';
@@ -205,10 +350,27 @@ define([
       template += '</div>';
       template += '<% } %>';
       this.$el.html(_.template(template)(this));
+
+      //append to root element - default $('body')
       this.options.rootElem.append(this.el);
+
       this.addClasses();
       this.getSize();
-      $('div.tooltip-text-wrapper', this.el).outerWidth(this.width - (2 * parseInt(this.$el.css('padding'))) - 2 * this.borderWidth);
+      this.positionSelf();
+      this.getCssStyles();
+
+      /*
+       * save reference to bound resize event 
+       * so it can be removed from the window
+       * when tooltip object is destroyed.
+       */
+      this.resizeHandler = _.bind(this.positionSelf, this);
+      $(window).bind('resize', this.resizeHandler);
+
+      //set text wrapper to same size as element to prevent bunching of text when animating width
+      $('div.tooltip-text-wrapper', this.el).outerWidth(this.width - (2 * this.padding) - 2 * this.borderWidth);
+
+
       if (this.options.timeout) {
         setTimeout(function() {
           self.exit();
@@ -216,14 +378,22 @@ define([
       }
       return this;
     },
+    getCssStyles: function(){
+      this.borderWidth = parseInt(this.$el.css('border-width'), 10);
+      this.padding = parseInt(this.$el.css('padding'), 10);
+    },
     getSize: function() {
+      /*
+       * Show and hide element to gain access
+       * to dimensions.
+       */
       this.$el.show();
-      this.width = this.$el[0].clientWidth + 2 * this.borderWidth;
-      this.height = this.$el[0].clientHeight + 2 * this.borderWidth;
+      this.width = this.$el.outerWidth();
+      this.height = this.$el.outerHeight();
       this.$el.hide();
-      this.positionSelf();
     },
     positionSelf: function() {
+      //position tooltip correclty relative to target and parent root element.
       var rootElemOffset = this.options.rootElem.offset(),
         scrollTop = this.options.rootElem.prop('tagName') === 'BODY' ? 0 : this.options.rootElem.get(0).scrollTop,
         pos = this.options.$el.offset();
@@ -251,46 +421,77 @@ define([
           pos.left = pos.left - ((this.width - this.elemWidth) / 2);
       }
       this.$el.css(pos);
+      //save reference to position for use in animations
       this.pos = pos;
     },
+
     exit: function() {
+      /*
+       * wait until animation complete before
+       * calling destroy();
+       */
       this.animate(false, this.destroy);
-      return false;
     },
+
     destroy: function() {
+      // Remove delegated event from the view
       this.undelegateEvents();
+
+      // Remove tooltip reference from $el data
       this.options.$el.data('activeTooltip', null);
-      $(window).unbind('click', this.clickHandler);
-      $(window).unbind('keydown', this.keypressHandler);
-      this.options.$el.off('mouseleave');
+      // Unbind window listeners relating to this tooltip
+      $(window).off('click', this.clickHandler);
+      $(window).off('keydown', this.keypressHandler);
+      $(window).off('resize', this.resizeHandler);
+
+      /*
+       * Remove mouseleave listener from
+       * element and tooltip if using
+       * hoverTrigger
+       */
+      if (this.options.hoverTrigger) {
+        this.options.$el.off('mouseleave');
+        this.$el.off('mouseleave');
+      }
+
+      //Remove custom listeners if added.
       if (this.options.trigger) {
         this.options.$el.unbind(this.options.exit, this.exitHandler);
         this.options.$el.unbind(this.options.trigger, this.enterHandler);
       }
-      this.$el.off('mouseleave');
+
+      /*
+       * Unbind events and remove from DOM
+       */
       this.$el.removeData().unbind();
       this.remove();
       Backbone.View.prototype.remove.call(this);
     },
+
     addClasses: function() {
-      var type, align;
+      /*
+       * Only allow defined classes to be
+       * added to elem.
+       */
+      var context, align;
       switch (this.options.context) {
         case 'info':
-          type = 'info';
+          context = 'info';
           break;
         case 'success':
-          type = 'success';
+          context = 'success';
           break;
         case 'error':
-          type = 'error';
+          context = 'error';
           break;
         case 'warning':
-          type = 'warning';
+          context = 'warning';
           break;
         default:
-          type = '';
+          context = '';
       }
-      this.$el.addClass(type);
+      this.$el.addClass(context);
+
       switch (this.options.align) {
         case 'top':
           align = 'align-top';
