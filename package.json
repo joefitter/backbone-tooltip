@@ -1,0 +1,30 @@
+{
+  "name": "backbone-tooltip",
+  "version": "0.0.5",
+  "description": "AMD Tooltip using Backbone for use in RequireJS projects.",
+  "main": "src/backbone-tooltip.amd.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/joefitter/backbone-tooltip.git"
+  },
+  "author": "Joe Fitter",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/joefitter/backbone-tooltip/issues"
+  },
+  "homepage": "https://github.com/joefitter/backbone-tooltip",
+  "devDependencies": {
+    "karma": "^0.12.12",
+    "karma-jasmine": "^0.1.5",
+    "requirejs": "^2.1.11",
+    "karma-requirejs": "^0.2.1",
+    "karma-chrome-launcher": "^0.1.3",
+    "karma-phantomjs-launcher": "^0.1.4",
+    "grunt-karma": "^0.8.2",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt": "^0.4.4"
+  }
+}
