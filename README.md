@@ -1,4 +1,5 @@
 # Backbone Tooltip
+[![Build Status](https://travis-ci.org/joefitter/backbone-tooltip.svg?branch=master)](https://travis-ci.org/joefitter/backbone-tooltip)
 
 Backbone Tooltip is an AMD module for use within RequireJS projects. 
 
