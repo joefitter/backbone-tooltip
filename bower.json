@@ -1,6 +1,6 @@
 {
   "name": "backbone-tooltip",
-  "version": "v0.0.5",
+  "version": "v0.0.6",
   "homepage": "https://github.com/joefitter/backbone-tooltip",
   "authors": [
     "Joe Fitter <joefitter@hotmail.com>"
@@ -16,7 +16,10 @@
     "node_modules",
     "bower_components",
     "test",
-    "tests"
+    "tests",
+    "Gruntfile.js",
+    "karma.conf.js",
+    "package.json"
   ],
   "dependencies": {
     "backbone": "~1.1.2",
