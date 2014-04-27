@@ -10,13 +10,19 @@ Backbone Tooltip requires:
 * [Underscore](http://underscorejs.org/) (can be replaced with lodash)
 
 ## Installation
-* Backbone Tooltip can be installed using [Bower](http://bower.io/)
+Backbone Tooltip can be installed using [Bower](http://bower.io/)
 
     $ bower install backbone-tooltip
 
-* You can clone the GitHub repository
+You can clone the GitHub repository
 
     $ git clone https://github.com/joefitter/backbone-tooltip
 
 ## Usage
-You can include 
+If your project uses [Require](http://requirejs.org/), Backbone Tooltip can be included as an AMD module by adding the AMD version to your paths config:
+
+    requirejs.config({
+      paths: {
+        tooltip: 'bower_components/backbone-tooltip/src/backbone-tooltip.amd.js'
+      }
+    });
