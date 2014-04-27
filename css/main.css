@@ -1,5 +1,10 @@
+
 .well pre:not(.panel-body > pre) {
 	background-color: white
+}
+
+pre {
+	overflow-x: auto;
 }
 
 .btn {

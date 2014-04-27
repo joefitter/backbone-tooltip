@@ -25,7 +25,7 @@ define([
     },
     addCustomEvents: function(){
       var self = this;
-      $('a[data-trigger]', this.el).each(function(){
+      $('[data-trigger]', this.el).each(function(){
         self.showTooltip($(this));
       });
     },
@@ -51,7 +51,8 @@ define([
         speed: $el.attr('data-speed'),
         interrupt: $el.attr('data-interrupt'),
         feedback: $el.attr('data-feedback'),
-        animation: $el.attr('data-animation')
+        animation: $el.attr('data-animation'),
+        prefix: $el.attr('data-prefix')
       });
       if($el.attr('data-feedback')){
         this.listenTo(tooltip, 'confirmed', function(){

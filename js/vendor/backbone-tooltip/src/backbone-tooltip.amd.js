@@ -52,8 +52,30 @@ define([
       // If animation not specified, set to 'fade' by default
       this.options.animation = this.options.animation || 'fade';
 
+      if (this.options.prefix === undefined) {
+        var prefix;
+        switch (this.options.context) {
+          case 'info':
+            prefix = 'Info';
+            break;
+          case 'success':
+            prefix = 'Success';
+            break;
+          case 'danger':
+            prefix = 'Danger';
+            break;
+          case 'warning':
+            prefix = 'Warning';
+            break;
+          default:
+            prefix = 'Info';
+            break;
+        }
+        this.options.prefix = prefix;
+      }
+
       if (this.options.animation === 'slidefade') {
-        this.options.distance = this.options.distance || 10;
+        this.options.distance = parseInt(this.options.distance, 10) || 10;
       }
 
       /*
@@ -171,7 +193,8 @@ define([
       ops.feedback = $el.attr('data-feedback');
       ops.speed = $el.attr('data-speed');
       ops.animation = $el.attr('data-animation');
-      ops.hoverTrigger = $el.attr('data-hovertrigger');
+      ops.distance = $el.attr('data-distance');
+      ops.prefix = $el.attr('data-prefix');
       return ops;
     },
     events: {
@@ -212,7 +235,9 @@ define([
       if (instant === true) {
         this.$el.hide();
       } else {
-        this.animate();
+        this.animate(false, function(){
+          this.$el.hide();
+        });
       }
       if (this.options.trigger) {
         /*
@@ -299,31 +324,16 @@ define([
               }, end), this.options.speed, boundCallback);
           }
           return this.$el.animate(_.extend({
-            opacity: 0
+            opacity: 0,
           }, start), this.options.speed, boundCallback);
       }
     },
     addDefaultExitListeners: function() {
-      var self = this;
       //save references so events can be removed from window on destroy
       this.clickHandler = _.bind(this.clicked, this);
       this.keypressHandler = _.bind(this.keypressed, this);
       $(window).on('click', this.clickHandler);
       $(window).on('keydown', this.keypressHandler);
-
-      /*
-       * changes default exit event triggers
-       * - should be used if instantiated with
-       * mouseenter event
-       */
-      if (this.options.hoverTrigger) {
-        this.options.$el.on('mouseleave', function(e) {
-          self.mouseLeaveHandler(e);
-        });
-        this.$el.on('mouseleave', function(e) {
-          self.mouseLeaveHandler(e);
-        });
-      }
     },
     clicked: function(e) {
       // check if the click event was on the target element or the tooltip object
@@ -331,14 +341,6 @@ define([
         isTooltip = $(e.target).hasClass('tooltip') || $(e.target).parents('.tooltip').length > 0 || false;
       if (!isTargetElem && !isTooltip) {
         //remove if the click was elsewhere
-        this.exit();
-      }
-    },
-    mouseLeaveHandler: function(e) {
-      // check if the mouse left both the tooltip and the target element. Exit if so. 
-      var isTooltip = $(e.toElement).get(0) === this.$el.get(0) || this.$el.find($(e.toElement)).length > 0 || false,
-        isTargetElem = this.options.$el.get(0) === $(e.toElement).get(0) || this.options.$el.find($(e.toElement)).length > 0 || false;
-      if (!isTargetElem && !isTooltip) {
         this.exit();
       }
     },
@@ -352,7 +354,12 @@ define([
       //using _.template to reduce number of dependencies
       var self = this,
         template = '<div class="arrow"></div>';
-      template += '<div class="tooltip-text-wrapper"><span><%= options.text %></span></div>';
+      template += '<div class="tooltip-text-wrapper"><span>';
+      if(this.options.prefix){
+        template += '<strong>' + this.options.prefix + ': </strong>';
+      }
+      template += '<%= options.text %>';
+      template += '</span></div>';
       template += '<% if(options.feedback) { %>';
       template += '<div class="feedback-buttons">';
       template += '<button class="btn btn-primary tooltip-confirm">Yes</button> ';
@@ -360,6 +367,12 @@ define([
       template += '</div>';
       template += '<% } %>';
       this.$el.html(_.template(template)(this));
+
+      if (this.options.feedback) {
+        if (this.options.context && this.options.context !== 'info') {
+          this.changeButtonClass();
+        }
+      }
 
       //append to root element - default $('body')
       this.options.rootElem.append(this.el);
@@ -387,6 +400,21 @@ define([
         }, this.options.timeout);
       }
       return this;
+    },
+    changeButtonClass: function() {
+      var cxt = this.options.context;
+      if (cxt === 'warning' || cxt === 'danger') {
+        $('.tooltip-confirm', this.el)
+          .removeClass('btn-primary')
+          .addClass('btn-danger');
+      } else if (cxt === 'success') {
+        $('.tooltip-confirm', this.el)
+          .removeClass('btn-primary')
+          .addClass('btn-success');
+        $('.tooltip-deny', this.el)
+          .removeClass('btn-primary')
+          .addClass('btn-danger');
+      }
     },
     getCssStyles: function() {
       this.borderWidth = parseInt(this.$el.css('border-width'), 10);
@@ -451,15 +479,6 @@ define([
       $(window).off('keydown', this.keypressHandler);
       $(window).off('resize', this.resizeHandler);
 
-      /*
-       * Remove mouseleave listener from
-       * element and tooltip if using
-       * hoverTrigger
-       */
-      if (this.options.hoverTrigger) {
-        this.options.$el.off('mouseleave');
-        //this.$el.off('mouseleave');
-      }
 
       //Remove custom listeners if added.
       if (this.options.trigger) {
@@ -489,14 +508,14 @@ define([
         case 'success':
           context = 'success';
           break;
-        case 'error':
-          context = 'error';
+        case 'danger':
+          context = 'danger';
           break;
         case 'warning':
           context = 'warning';
           break;
         default:
-          context = '';
+          context = 'info';
       }
       this.$el.addClass(context);
 
