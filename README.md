@@ -56,6 +56,8 @@ For non-AMD projects, include the following scripts before the closing `<head>` 
 
 Alter the paths above so they point to the correct locations in your file structure.
 
+If you use the non-AMD version, the tooltip is instantiated by creating a `new Backbone.Tooltip();`
+
 ## Usage
 A Backbone Tooltip can be instantiated by either passing an options hash or a jQuery element. If you use an options hash a jQuery element must be passed as the `$el` or an error will be thrown.
 
