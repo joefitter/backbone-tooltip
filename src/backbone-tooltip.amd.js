@@ -19,6 +19,7 @@ define([
       if (!options || typeof options !== 'object') {
         throw new Error('Tooltip needs to be provided with a jQuery element object or options hash');
       }
+
       /*
        * Check if Tooltip was instantiated with
        * a jQeury object or an options hash.
@@ -28,18 +29,22 @@ define([
       } else {
         this.options = options;
       }
+
       /*
        * Check if a target element has been provided
        * and it is a jQuery object
        */
-
-
       if (this.options.$el === undefined || !(this.options.$el instanceof $)) {
         throw new Error('Tooltip needs a target element');
       }
 
-      if(this.options.text === undefined || this.options.text === ''){
+      if (this.options.text === undefined || this.options.text === '') {
         throw new Error('Sorry, no tooltip text was provided.');
+      }
+
+      // Feedback and Timout are incompatible options
+      if (this.options.feedback && this.options.timeout) {
+        throw new Error('Sorry, cannot timeout tooltip while awaiting feedback');
       }
 
       // If speed not specified, set to 200ms by default
@@ -48,7 +53,7 @@ define([
       // If animation not specified, set to 'fade' by default
       this.options.animation = this.options.animation || 'fade';
 
-      if(this.options.animation === 'slidefade'){
+      if (this.options.animation === 'slidefade') {
         this.options.distance = this.options.distance || 10;
       }
 
@@ -89,7 +94,7 @@ define([
          * default jQuery element.
          */
         this.enterHandler = _.bind(this.show, this);
-        this.options.$el.bind(this.options.trigger, this.enterHandler);
+        this.options.$el.on(this.options.trigger, this.enterHandler);
       } else {
         /*
          * If no trigger event provided then assume trigger
@@ -130,7 +135,7 @@ define([
       elems.each(function(i, item) {
         // Reference to tooltip stored in element data()
         var tooltip = $(item).data('activeTooltip');
-        if(tooltip){
+        if (tooltip) {
           if (tooltip.options.exit) {
             if (tooltip.$el.is(':visible')) {
               /* 
@@ -194,13 +199,13 @@ define([
       this.animate(true);
       if (this.options.trigger) {
         /*
-         * unbinding and rebinding allows for 
+         * unbinding and rebinding allows for
          * same event to be used for show and hide
          */
-        this.options.$el.unbind(this.options.trigger, this.enterHandler);
+        this.options.$el.off(this.options.trigger, this.enterHandler);
       }
       if (this.options.exit) {
-        this.options.$el.bind(this.options.exit, this.exitHandler);
+        this.options.$el.on(this.options.exit, this.exitHandler);
       }
     },
     hide: function(instant) {
@@ -212,13 +217,13 @@ define([
       }
       if (this.options.trigger) {
         /*
-         * unbinding and rebinding allows for 
+         * unbinding and rebinding allows for
          * same event to be used for show and hide
          */
-        this.options.$el.bind(this.options.trigger, this.enterHandler);
+        this.options.$el.on(this.options.trigger, this.enterHandler);
       }
       if (this.options.exit) {
-        this.options.$el.unbind(this.options.exit, this.exitHandler);
+        this.options.$el.off(this.options.exit, this.exitHandler);
       }
     },
     animate: function(enter, callback) {
@@ -239,7 +244,7 @@ define([
             return this.$el.fadeIn(this.options.speed, boundCallback);
           }
           return this.$el.fadeOut(this.options.speed, boundCallback);
-        
+
         case 'slide':
           // if aligned top or bottom, slideUp and slideDown will work fine.
           if (this.options.align === 'top' || this.options.align === 'bottom') {
@@ -366,12 +371,12 @@ define([
       this.getCssStyles();
 
       /*
-       * save reference to bound resize event 
+       * save reference to bound resize event
        * so it can be removed from the window
        * when tooltip object is destroyed.
        */
       this.resizeHandler = _.bind(this.positionSelf, this);
-      $(window).bind('resize', this.resizeHandler);
+      $(window).on('resize', this.resizeHandler);
 
       //set text wrapper to same size as element to prevent bunching of text when animating width
       $('div.tooltip-text-wrapper', this.el).outerWidth(this.width - (2 * this.padding) - 2 * this.borderWidth);
@@ -384,7 +389,7 @@ define([
       }
       return this;
     },
-    getCssStyles: function(){
+    getCssStyles: function() {
       this.borderWidth = parseInt(this.$el.css('border-width'), 10);
       this.padding = parseInt(this.$el.css('padding'), 10);
     },
@@ -459,8 +464,10 @@ define([
 
       //Remove custom listeners if added.
       if (this.options.trigger) {
-        this.options.$el.unbind(this.options.exit, this.exitHandler);
-        this.options.$el.unbind(this.options.trigger, this.enterHandler);
+        this.options.$el.off(this.options.trigger, this.enterHandler);
+      }
+      if (this.options.exit) {
+        this.options.$el.off(this.options.exit, this.exitHandler);
       }
 
       /*
