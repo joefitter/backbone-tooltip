@@ -1,12 +1,15 @@
 {
   "name": "backbone-tooltip",
-  "version": "v1.1.0",
+  "version": "v1.2.0",
   "homepage": "https://github.com/joefitter/backbone-tooltip",
   "authors": [
     "Joe Fitter <joefitter@hotmail.com>"
   ],
   "description": "AMD Tooltip using Backbone for use in RequireJS projects.",
-  "main": "app/views/BaseView.js",
+  "main": [
+    "src/backbone-tooltip.amd.js",
+    "src/backbone-tooltip.js"
+  ],
   "moduleType": [
     "amd"
   ],
