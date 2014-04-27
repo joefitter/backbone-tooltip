@@ -85,26 +85,6 @@ body {
   top:-8px;
 }
 
-div.tooltip.error span:before {
-    content: "Error: ";
-    font-weight: bold;
-}
-
-div.tooltip.info span:before {
-    content: "Info: ";
-    font-weight: bold;
-}
-
-div.tooltip.success span:before {
-    content: "Success: ";
-    font-weight: bold;
-}
-
-div.tooltip.warning span:before {
-    content: "Warning: ";
-    font-weight: bold;
-}
-
 div.tooltip.success {
   background-color:#dff0d8;
   border-color:#d6e9c6;
@@ -117,7 +97,7 @@ div.tooltip.warning {
     color:#8a6d3b;
 }
 
-div.tooltip.error {
+div.tooltip.danger {
   background-color:#f2dede;
   border-color:#ebccd1;
   color:#a94442;
@@ -141,11 +121,11 @@ div.tooltip.warning.align-right .arrow:after {border-right-color:#fcf8e3}
 div.tooltip.warning.align-bottom .arrow {border-bottom-color: #faebcc}
 div.tooltip.warning.align-bottom .arrow:after {border-bottom-color:#fcf8e3}
 
-div.tooltip.error.align-top .arrow {border-top-color: #ebccd1}
-div.tooltip.error.align-top .arrow:after {border-top-color:#f2dede}
-div.tooltip.error.align-left .arrow {border-left-color: #ebccd1}
-div.tooltip.error.align-left .arrow:after {border-left-color:#f2dede}
-div.tooltip.error.align-right .arrow {border-right-color: #ebccd1}
-div.tooltip.error.align-right .arrow:after {border-right-color:#f2dede}
-div.tooltip.error.align-bottom .arrow {border-bottom-color: #ebccd1}
-div.tooltip.error.align-bottom .arrow:after {border-bottom-color:#f2dede}
+div.tooltip.danger.align-top .arrow {border-top-color: #ebccd1}
+div.tooltip.danger.align-top .arrow:after {border-top-color:#f2dede}
+div.tooltip.danger.align-left .arrow {border-left-color: #ebccd1}
+div.tooltip.danger.align-left .arrow:after {border-left-color:#f2dede}
+div.tooltip.danger.align-right .arrow {border-right-color: #ebccd1}
+div.tooltip.danger.align-right .arrow:after {border-right-color:#f2dede}
+div.tooltip.danger.align-bottom .arrow {border-bottom-color: #ebccd1}
+div.tooltip.danger.align-bottom .arrow:after {border-bottom-color:#f2dede}
