@@ -8,7 +8,6 @@ define([
   $,
   Backbone
 ) {
-
   /* leaving out use strict statement so
      can be included in non-strict modules */
 
