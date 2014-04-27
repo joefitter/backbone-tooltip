@@ -60,6 +60,7 @@ Alter the paths above so they point to the correct locations in your file struct
 A Backbone Tooltip can be instantiated by either passing an options hash or a jQuery element. If you use an options hash a jQuery element must be passed as the `$el` or an error will be thrown.
 
 By default, the tooltip will be shown as soon as it is instantiated and destroyed once an element other than the target element or the tooltip is clicked, or the tab button pressed. If you use the tooltip in this way, you will need to create an event listener which creates a `new Tooltip(options);` when fired:
+
     $(element).on('focus', function(){
       new Tooltip({
         $el: $jQueryObject,
