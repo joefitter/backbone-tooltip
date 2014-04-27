@@ -1,6 +1,6 @@
 {
   "name": "backbone-tooltip",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "AMD Tooltip using Backbone for use in RequireJS projects.",
   "main": "src/backbone-tooltip.amd.js",
   "scripts": {
