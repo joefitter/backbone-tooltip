@@ -128,7 +128,7 @@ new Tooltip($jqueryObject);</pre>
   speed: (Integer) milliseconds, // default 200
   feedback: (Boolean) requireFeedback, // default undefined
   animation: (String) 'fade|slide|slidefade', // default 'fade',
-  hoverTrigger: (Boolean) true|false, //default false
+  hoverTrigger: (Boolean) true|false, //default undefined
   id: (String) id // default null
 }</pre>
 						</div>
