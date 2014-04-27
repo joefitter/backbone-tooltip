@@ -126,3 +126,6 @@ Options can be configured on each element using `HTML5` data-attributes. The fol
       data-hovertrigger="false"
       data-feedback="true">Click Me
     </a>
+
+## Examples
+You can see a variety of working examples by visiting the [project page](http://joefitter.github.io/backbone-tooltip/).
