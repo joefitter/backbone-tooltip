@@ -17,7 +17,7 @@ define([
     arrowSize: 10,
     initialize: function(options) {
       if (!options || typeof options !== 'object') {
-        throw new Error('Tooltip need to be provided with a jQuery element object or options hash');
+        throw new Error('Tooltip needs to be provided with a jQuery element object or options hash');
       }
       /*
        * Check if Tooltip was instantiated with
@@ -34,9 +34,12 @@ define([
        */
 
 
-      if ((this.options.$el === undefined) || !(this.options.$el instanceof $)) {
-
+      if (this.options.$el === undefined || !(this.options.$el instanceof $)) {
         throw new Error('Tooltip needs a target element');
+      }
+
+      if(this.options.text === undefined || this.options.text === ''){
+        throw new Error('Sorry, no tooltip text was provided.');
       }
 
       // If speed not specified, set to 200ms by default
@@ -437,9 +440,6 @@ define([
     },
 
     destroy: function() {
-      // Remove delegated event from the view
-      this.undelegateEvents();
-
       // Remove tooltip reference from $el data
       this.options.$el.data('activeTooltip', null);
       // Unbind window listeners relating to this tooltip
@@ -454,7 +454,7 @@ define([
        */
       if (this.options.hoverTrigger) {
         this.options.$el.off('mouseleave');
-        this.$el.off('mouseleave');
+        //this.$el.off('mouseleave');
       }
 
       //Remove custom listeners if added.
@@ -466,9 +466,8 @@ define([
       /*
        * Unbind events and remove from DOM
        */
-      this.$el.removeData().unbind();
       this.remove();
-      Backbone.View.prototype.remove.call(this);
+      this.unbind();
     },
 
     addClasses: function() {

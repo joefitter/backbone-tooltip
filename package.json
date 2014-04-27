@@ -18,7 +18,7 @@
   "homepage": "https://github.com/joefitter/backbone-tooltip",
   "devDependencies": {
     "karma": "^0.12.12",
-    "karma-jasmine": "^0.1.5",
+    "karma-jasmine": "^0.2.0",
     "requirejs": "^2.1.11",
     "karma-requirejs": "^0.2.1",
     "karma-chrome-launcher": "^0.1.3",
