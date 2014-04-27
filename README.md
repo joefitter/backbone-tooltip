@@ -10,7 +10,7 @@ Backbone Tooltip requires:
 * [Underscore](http://underscorejs.org/) (can be replaced with lodash)
 
 ## Installation
-* Backbone Tooltip can be installed using [Bower](http://bower.io/)
-      $ bower install backbone-tooltip
+Backbone Tooltip can be installed using [Bower](http://bower.io/)
+    $ bower install backbone-tooltip
 * You can clone the GitHub repository
-      $ git clone https://github.com/joefitter/backbone-tooltip
+    $ git clone https://github.com/joefitter/backbone-tooltip
