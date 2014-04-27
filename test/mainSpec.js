@@ -73,11 +73,11 @@ define([
         it('should have align-top class by default', function() {
           expect(classes).toContain('align-top');
         });
-        it('shouldn\'t have a contextual class by default', function() {
-          expect(classes).not.toContain('info');
+        it('should have info contextual class by default', function() {
+          expect(classes).toContain('info');
           expect(classes).not.toContain('success');
           expect(classes).not.toContain('warning');
-          expect(classes).not.toContain('error');
+          expect(classes).not.toContain('danger');
         });
         it('should have a speed of 200 by default', function() {
           expect(tooltip.options.speed).toBe(200);
@@ -86,7 +86,7 @@ define([
           expect(tooltip.options.animation).toBe('fade');
         });
         it('should contain the text "tooltip text"', function() {
-          expect(tooltip.$el.text()).toBe('tooltip text');
+          expect(tooltip.$el.text()).toBe('Info: tooltip text');
         });
         it('should be visible', function() {
           expect(tooltip.$el.is(':visible')).toBe(true);
@@ -101,7 +101,7 @@ define([
             $el: $el,
             text: 'something went wrong',
             align: 'bottom',
-            context: 'error',
+            context: 'danger',
             timeout: 3000,
             speed: 100,
             animation: 'slide',
@@ -120,8 +120,8 @@ define([
         it('should have "align-bottom" as a class', function() {
           expect(classes).toContain('align-bottom');
         });
-        it('should have "error" as a class', function() {
-          expect(classes).toContain('error');
+        it('should have "danger" as a class', function() {
+          expect(classes).toContain('danger');
         });
         it('should have a timout of 3000 (int)', function() {
           expect(tooltip.options.timeout).toBe(3000);
@@ -182,7 +182,7 @@ define([
         classes = null;
       });
       it('should contain the correct text', function() {
-        expect(tooltip.$el.find('span').text()).toBe('tooltip text');
+        expect(tooltip.$el.find('span').text()).toBe('Warning: tooltip text');
       });
       it('should contain the "align-left" class', function() {
         expect(classes).toContain('align-left');
