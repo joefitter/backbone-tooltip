@@ -22,7 +22,7 @@ define([
 
       /*
        * Check if Tooltip was instantiated with
-       * a jQeury object or an options hash.
+       * a jQuery object or an options hash.
        */
       if (options instanceof $) {
         this.options = this.parseDataAttributes(options);
