@@ -11,6 +11,6 @@ Backbone Tooltip requires:
 
 ## Installation
 * Backbone Tooltip can be installed using [Bower](http://bower.io/)
-    $ bower install backbone-tooltip
+      $ bower install backbone-tooltip
 * You can clone the GitHub repository
-    $ git clone https://github.com/joefitter/backbone-tooltip
+      $ git clone https://github.com/joefitter/backbone-tooltip
