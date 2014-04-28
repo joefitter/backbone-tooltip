@@ -23,6 +23,8 @@ You can clone the GitHub repository
 $ git clone https://github.com/joefitter/backbone-tooltip
 ```
 
+Or you can download the repo as a .zip [here](https://github.com/joefitter/backbone-tooltip/archive/master.zip) - extract and copy the src folder into your project.
+
 ## Installation
 You will need to include the stylesheet in the `<head>` of every page the tooltip will be used on:
 
