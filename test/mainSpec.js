@@ -164,12 +164,12 @@ define([
       var $el, tooltip, classes, watcher;
       beforeEach(function() {
         $el = $('<div/>', {
-          'data-tooltip': 'tooltip text',
-          'data-context': 'warning',
-          'data-speed': '400',
-          'data-feedback': true,
-          'data-align': 'left',
-          'data-id': 'data-attributes'
+          'data-bbtooltip': 'tooltip text',
+          'data-bbtooltip-context': 'warning',
+          'data-bbtooltip-speed': '400',
+          'data-bbtooltip-feedback': true,
+          'data-bbtooltip-align': 'left',
+          'data-bbtooltip-id': 'data-attributes'
         });
         tooltip = new Tooltip($el);
         watcher = jasmine.createSpy('watcher');

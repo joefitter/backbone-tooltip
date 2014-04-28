@@ -175,19 +175,19 @@ Backbone.Tooltip = Backbone.View.extend({
      */
     var ops = {};
     ops.$el = $el;
-    ops.align = $el.attr('data-align');
-    ops.id = $el.attr('data-id');
-    ops.context = $el.attr('data-context');
-    ops.text = $el.attr('data-tooltip');
-    ops.timeout = $el.attr('data-timeout');
-    ops.interrupt = $el.attr('data-interrupt');
-    ops.trigger = $el.attr('data-trigger');
-    ops.exit = $el.attr('data-exit');
-    ops.feedback = $el.attr('data-feedback');
-    ops.speed = $el.attr('data-speed');
-    ops.animation = $el.attr('data-animation');
-    ops.distance = $el.attr('data-distance');
-    ops.prefix = $el.attr('data-prefix');
+    ops.text = $el.attr('data-bbtooltip');
+    ops.align = $el.attr('data-bbtooltip-align');
+    ops.id = $el.attr('data-bbtooltip-id');
+    ops.context = $el.attr('data-bbtooltip-context');
+    ops.timeout = $el.attr('data-bbtooltip-timeout');
+    ops.interrupt = $el.attr('data-bbtooltip-interrupt');
+    ops.trigger = $el.attr('data-bbtooltip-trigger');
+    ops.exit = $el.attr('data-bbtooltip-exit');
+    ops.feedback = $el.attr('data-bbtooltip-feedback');
+    ops.speed = $el.attr('data-bbtooltip-speed');
+    ops.animation = $el.attr('data-bbtooltip-animation');
+    ops.distance = $el.attr('data-bbtooltip-distance');
+    ops.prefix = $el.attr('data-bbtooltip-prefix');
     return ops;
   },
   events: {
@@ -332,14 +332,14 @@ Backbone.Tooltip = Backbone.View.extend({
     // check if the click event was on the target element or the tooltip object
     var isTargetElem = this.options.$el.get(0) === $(e.target).get(0) || this.options.$el.find($(e.target)).length > 0,
       isTooltip = $(e.target).hasClass('tooltip') || $(e.target).parents('.tooltip').length > 0 || false;
-    if (!isTargetElem && !isTooltip) {
+    if (!isTargetElem && !isTooltip && !this.options.feedback) {
       //remove if the click was elsewhere
       this.exit();
     }
   },
   keypressed: function(e) {
     // keyCode 9 = Tab
-    if (e.keyCode === 9) {
+    if (e.keyCode === 9 && !this.options.feedback) {
       this.exit();
     }
   },

@@ -74,16 +74,16 @@ Alter the paths above so they point to the correct locations in your file struct
 If you use the non-AMD version, the tooltip is instantiated by creating a `new Backbone.Tooltip();`
 
 ## TL;DR
-Add the `data-tooltip` attribute to any element that requires a tooltp:
+Add the `data-bbtooltip` attribute to any element that requires a tooltp:
 
 ```html
-<a href="#" data-tooltip="I am a tooltip">Click Me</a>
+<a href="#" data-bbtooltip="I am a tooltip">Click Me</a>
 ```
 
 Register the event handlers and create a new Tooltip instance:
 
 ```js
-$('[data-tooltip]').each(function(){
+$('[data-bbtooltip]').each(function(){
   var $this = $(this);
   $this.on('click', function(){
     new Tooltip($this);
@@ -159,18 +159,18 @@ Options can be configured on each element using `HTML5` data-attributes. The fol
 
 ```html
 <a href="#"
-  data-tooltip="This is the tooltip text"
-  data-align="top"
-  data-context="danger"
-  data-timeout="3000"
-  data-interrupt="true"
-  data-trigger="click"
-  data-exit="click"
-  data-speed="200"
-  data-prefix="Oops"
-  data-distance="50"
-  data-animation="slidefade"
-  data-feedback="true">Click Me</a>
+  data-bbtooltip="This is the tooltip text"
+  data-bbtooltip-align="top"
+  data-bbtooltip-context="danger"
+  data-bbtooltip-timeout="3000"
+  data-bbtooltip-interrupt="true"
+  data-bbtooltip-trigger="click"
+  data-bbtooltip-exit="click"
+  data-bbtooltip-speed="200"
+  data-bbtooltip-prefix="Oops"
+  data-bbtooltip-distance="50"
+  data-bbtooltip-animation="slidefade"
+  data-bbtooltip-feedback="true">Click Me</a>
 ```
 
 ## Examples
