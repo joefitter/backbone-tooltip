@@ -73,7 +73,7 @@ Alter the paths above so they point to the correct locations in your file struct
 
 If you use the non-AMD version, the tooltip is instantiated by creating a `new Backbone.Tooltip();`
 
-## Quick Start
+## TL;DR
 Add the `data-tooltip` attribute to any element that requires a tooltp:
 
 ```html
