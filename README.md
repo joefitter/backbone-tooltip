@@ -1,7 +1,10 @@
 # Backbone Tooltip [![Build Status](https://travis-ci.org/joefitter/backbone-tooltip.svg?branch=master)](https://travis-ci.org/joefitter/backbone-tooltip)
 > Lightweight Bootstrap-esque tooltip that doesn't require Bootstrap
 
-Backbone Tooltip is a fully customisable plugin for use in web applications. It is written in BackboneJS but can be used in any front end environment. 
+Backbone Tooltip is a fully customisable plugin for use in web applications. It is written in BackboneJS but can be used in any front end environment.
+
+## Current version
+The latest version of Backbone Tooltip is v1.4.0. Breaking changes from 1.3.2 have been made to data-attributes. These are now namespaced bbtooltip to prevent conflict with other modules that utilise data-attributes.
 
 ## Prerequisites
 Backbone Tooltip requires:
