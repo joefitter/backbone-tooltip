@@ -6,7 +6,8 @@ Backbone Tooltip is a fully customisable plugin for use in web applications. It 
 ## Current version
 The latest version of Backbone Tooltip is **v1.4.0**. 
 
-Breaking changes from v1.3.2 have been made to data-attributes. These are now namespaced `data-bbtooltip` to prevent conflict with other modules that utilise data-attributes.
+Breaking changes from v1.3.2 have been made to data-attributes. These are now namespaced 
+`data-bbtooltip` to prevent conflict with other modules that utilise data-attributes.
 
 ## Prerequisites
 Backbone Tooltip requires:
