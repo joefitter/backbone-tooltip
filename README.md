@@ -113,7 +113,7 @@ The Backbone Tooltip can be instantiated by passing an options hash `new Tooltip
 
 ```js
 {
-  $el: (jQuery Onject) element, // required
+  $el: (jQuery Object) element, // required
   text: (String) message, // default ''
   rootElem: (jQuery Object) element, // default $('body')
   align: (String) 'top|bottom|left|right', // default 'top'
