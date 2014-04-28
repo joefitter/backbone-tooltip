@@ -32,7 +32,7 @@ You will need to include the stylesheet in the `<head>` of every page the toolti
 <link rel="stylesheet" href="bower_components/backbone-tooltip/src/backbone-tooltip.css">
 ```
 
-### AMD
+#### AMD
 If your project uses [RequireJS](http://requirejs.org/), Backbone Tooltip can be included as an AMD module by adding the AMD version to your paths config, you will also need to specify the locations of jQuery, Backbone and Underscore:
 
 ```js
@@ -59,7 +59,7 @@ define('module-name', ['tooltip', ...], function(Tooltip, ...){
 });
 ```
 
-### Non-AMD
+#### Non-AMD
 For non-AMD projects, include the following scripts before the closing `<head>` tag
 
 ```html
@@ -72,6 +72,27 @@ For non-AMD projects, include the following scripts before the closing `<head>` 
 Alter the paths above so they point to the correct locations in your file structure.
 
 If you use the non-AMD version, the tooltip is instantiated by creating a `new Backbone.Tooltip();`
+
+## Quick Start
+Add the `data-tooltip` attribute to any element that requires a tooltp:
+
+```html
+<a href="#" data-tooltip="I am a tooltip">Click Me</a>
+```
+
+Register the event handlers:
+
+```js
+$('[data-tooltip]').each(function(){
+  var $this = $(this);
+  $this.on('click', function(){
+    new Tooltip($this);
+    //non AMD - new Backbone.Tooltip($this);
+  });
+});
+```
+
+A full list of options that can be passed with `data-attributes` can be seen below.
 
 ## Usage
 A Backbone Tooltip can be instantiated by either passing an options hash or a jQuery element. If you use an options hash a jQuery element must be passed as the `$el` or an error will be thrown.
@@ -93,7 +114,7 @@ $(element).on('focus', function(){
 });
 ```
 
-### Custom Triggers
+#### Custom Triggers
 To use custom triggers rather than Backbone events, instantiate a `new Tooltip()` for each tooltip element when the element is rendered and pass the options `trigger: 'click|mouseenter|...` and `exit: 'click|mouseleave|...`:
 
 ```js
@@ -110,7 +131,7 @@ $(function(){
 ```
 
 ## Options
-### Options hash
+#### Options hash
 The Backbone Tooltip can be instantiated by passing an options hash `new Tooltip(options)` The following options are supported
 
 ```js
@@ -133,7 +154,7 @@ The Backbone Tooltip can be instantiated by passing an options hash `new Tooltip
 }
 ```
 
-### Data-Attributes
+#### Data-Attributes
 Options can be configured on each element using `HTML5` data-attributes. The following data-attributes are supported
 
 ```html
