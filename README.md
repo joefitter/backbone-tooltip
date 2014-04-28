@@ -5,9 +5,10 @@ Backbone Tooltip is a plugin for use in web applications. It is written in Backb
 
 ## Prerequisites
 Backbone Tooltip requires:
-* [jQuery](http://jquery.com/)
-* [Backbone](http://backbonejs.org)
-* [Underscore](http://underscorejs.org/) or [Lo-Dash](http://lodash.com/)
+* [jQuery](http://jquery.com/) >= v1.9.0
+* [Backbone](http://backbonejs.org) >= v0.9.0
+
+Note: Backbone requires either [Underscore](http://underscorejs.org/) or [Lo-Dash](http://lodash.com/) so you will need to also include one of these manually if you are not installing with Bower.
 
 ## Get Backbone Tooltip
 Backbone Tooltip can be installed using [Bower](http://bower.io/)
