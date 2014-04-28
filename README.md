@@ -99,16 +99,17 @@ The Backbone Tooltip can be instantiated by passing an options hash `new Tooltip
       text: (String) message, // default ''
       rootElem: (jQuery element) element, // default $('body')
       align: 'top|bottom|left|right', // default 'top'
-      context: 'info|success|warning|error', // default ''
+      context: 'info|success|warning|danger', // default ''
       timeout: (Integer) milliseconds, // default undefined
       interrupt: (Boolean) interrupt, // default undefined
       trigger: (String) event, // default undefined
       exit: (String) event, // default undefined
       speed: (Integer) milliseconds, // default 200
       feedback: (Boolean) requireFeedback, // default undefined
-      animation: (String) 'fade|slide|slidefade', // default 'fade',
-      hoverTrigger: (Boolean) true|false, //default undefined
-      id: (String) id // default null
+      animation: (String) 'fade|slide|slidefade', // default 'fade'
+      id: (String) id, // default undefined
+      prefix: (String) prefixTheMessage, // default 'Info|Success|Warning|Danger' depending on context
+      distance: (Integer) 50 // default 10 - distance to animate (only slidefade)
     }
 
 ### Data-Attributes
@@ -117,15 +118,16 @@ Options can be configured on each element using `HTML5` data-attributes. The fol
     <a href="#"
       data-tooltip="This is the tooltip text"
       data-align="top"
-      data-context="info"
+      data-context="danger"
       data-timeout="3000"
       data-interrupt="true"
       data-trigger="click"
       data-exit="click"
       data-speed="200"
-      data-hovertrigger="false"
-      data-feedback="true">Click Me
-    </a>
+      data-prefix="Oops"
+      data-distance="50"
+      data-animation="slidefade"
+      data-feedback="true">Click Me</a>
 
 ## Examples
 You can see a variety of working examples by visiting the [project page](http://joefitter.github.io/backbone-tooltip/).
