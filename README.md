@@ -113,21 +113,21 @@ The Backbone Tooltip can be instantiated by passing an options hash `new Tooltip
 
 ```js
 {
-  $el: (jQuery element) element, // required
+  $el: (jQuery Onject) element, // required
   text: (String) message, // default ''
-  rootElem: (jQuery element) element, // default $('body')
-  align: 'top|bottom|left|right', // default 'top'
-  context: 'info|success|warning|danger', // default ''
-  timeout: (Integer) milliseconds, // default undefined
+  rootElem: (jQuery Object) element, // default $('body')
+  align: (String) 'top|bottom|left|right', // default 'top'
+  context: (String)'info|success|warning|danger', // default ''
+  timeout: (Number) milliseconds, // default undefined
   interrupt: (Boolean) interrupt, // default undefined
   trigger: (String) event, // default undefined
   exit: (String) event, // default undefined
-  speed: (Integer) milliseconds, // default 200
+  speed: (Number) milliseconds, // default 200
   feedback: (Boolean) requireFeedback, // default undefined
   animation: (String) 'fade|slide|slidefade', // default 'fade'
   id: (String) id, // default undefined
   prefix: (String) prefixTheMessage, // default 'Info|Success|Warning|Danger' depending on context
-  distance: (Integer) 50 // default 10 - distance to animate (only slidefade)
+  distance: (Number) 50 // default 10 - distance to animate (only slidefade)
 }
 ```
 
