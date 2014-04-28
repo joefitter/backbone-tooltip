@@ -80,7 +80,7 @@ Add the `data-tooltip` attribute to any element that requires a tooltp:
 <a href="#" data-tooltip="I am a tooltip">Click Me</a>
 ```
 
-Register the event handlers:
+Register the event handlers and create a new Tooltip instance:
 
 ```js
 $('[data-tooltip]').each(function(){
