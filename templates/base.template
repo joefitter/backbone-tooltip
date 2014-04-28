@@ -7,16 +7,16 @@
 					<h3>Context</h3>
 					<p>Tooltips can be given context by passing an optional <code>{context:'info|success|warning|danger'}</code> when instantiating. If no context is passed, the tooltip will default to light blue.</p>
 					<div class="form-group">
-						<input type="text" class="form-control" placeholder="Info tooltip..." data-tooltip="This is an info tooltip, just to help you out" data-context="info" />
+						<input type="text" class="form-control" placeholder="Info tooltip..." data-bbtooltip="This is an info tooltip, just to help you out" data-bbtooltip-context="info" />
 					</div>
 					<div class="form-group">
-						<input type="text" class="form-control" placeholder="Success tooltip..." data-tooltip="Wahey! you did something right - this tooltip is happy about it" data-context="success" />
+						<input type="text" class="form-control" placeholder="Success tooltip..." data-bbtooltip="Wahey! you did something right - this tooltip is happy about it" data-bbtooltip-context="success" />
 					</div>
 					<div class="form-group">
-						<input type="text" class="form-control" placeholder="Warning tooltip..." data-tooltip="Uh oh - something you are doing doesn't seem quite right" data-context="warning"/>
+						<input type="text" class="form-control" placeholder="Warning tooltip..." data-bbtooltip="Uh oh - something you are doing doesn't seem quite right" data-bbtooltip-context="warning"/>
 					</div>
 					<div class="form-group">
-						<input type="text" class="form-control" data-prefix="Error" placeholder="Danger tooltip..." data-tooltip="Oh snap! Something went wrong!" data-context="danger" />
+						<input type="text" class="form-control" data-bbtooltip-prefix="Error" placeholder="Danger tooltip..." data-bbtooltip="Oh snap! Something went wrong!" data-bbtooltip-context="danger" />
 					</div>
 				</div>
 			</div>
@@ -25,16 +25,16 @@
 					<h3>Alignment</h3>
 					<p>Tooltips can be aligned to the top, left, right or beneath the target element, try passing <code>{align: 'top|left|right|bottom'}</code> to change the alignment. If no align option is passed, the default alignment is above the element.</p>
 					<div class="form-group">
-						<input type="text" class="form-control" data-align="top" placeholder="Align top..." data-tooltip="This tooltip is top aligned" />
+						<input type="text" class="form-control" data-bbtooltip-align="top" placeholder="Align top..." data-bbtooltip="This tooltip is top aligned" />
 					</div>
 					<div class="form-group">
-						<input type="text" class="form-control" data-align="left" placeholder="Align left..." data-tooltip="This tooltip is aligned to the left"/>
+						<input type="text" class="form-control" data-bbtooltip-align="left" placeholder="Align left..." data-bbtooltip="This tooltip is aligned to the left"/>
 					</div>
 					<div class="form-group">
-						<input type="text" class="form-control" data-align="right" placeholder="Align right..." data-tooltip="This tooltip is right-aligned" />
+						<input type="text" class="form-control" data-bbtooltip-align="right" placeholder="Align right..." data-bbtooltip="This tooltip is right-aligned" />
 					</div>
 					<div class="form-group">
-						<input type="text" class="form-control" data-align="bottom" placeholder="Align bottom..." data-tooltip="This tooltip is beneath the element"/>
+						<input type="text" class="form-control" data-bbtooltip-align="bottom" placeholder="Align bottom..." data-bbtooltip="This tooltip is beneath the element"/>
 					</div>
 				</div>
 			</div>
@@ -47,45 +47,45 @@
 					<p>Tooltips are instantiated when an event listener fires - the following examples are all shown on click.</p>
 					<p>By default, tooltips are hidden when you click anywhere other than the target element or the tooltip, or if you push the tab button.</p>
 					<p>If you want to use different triggers, see below for how to implement these.</p>
-					<a class="btn btn-primary btn-lg" data-tooltip="I take 600ms to appear and disappear" data-speed="600" data-align="top">Slow animation</a>
-					<a class="btn btn-warning btn-lg" data-tooltip="I take 200ms to appear and disappear" data-speed="200" data-context="warning" data-align="bottom">Fast animation</a>
-					<a class="btn btn-success btn-lg" data-tooltip="I dont mess about, if you need help fast, here I am." data-speed="0" data-align="top" data-context="success">No animation</a>
-					<a class="btn btn-primary btn-lg" data-tooltip="Well done, you clicked the button! I will disappear in 3 seconds (unless you get rid of me before)" data-timeout="3000" data-align="bottom" data-context="info">Timeout</a>
-					<a class="btn btn-danger btn-lg" data-tooltip="Hey! I'm important and will cause any other tooltip on the page to disappear! Try it by using the 'toggle' example then this one." data-interrupt="true" data-context="danger" data-align="top">Interrupt</a>
-					<a class="btn btn-primary btn-lg" data-tooltip="I need some feedback, let me know if you want to continue what you were doing" data-feedback="true" data-align="bottom" data-context="info">Confirmation needed</a>
-					<a class="btn btn-success btn-lg" data-tooltip="I can animate in different ways" data-animation="slide" data-align="top" data-context="success">Slide Toggle</a>
-					<a class="btn btn-primary btn-lg" data-tooltip="You can combine speed and animation options" data-animation="slide" data-speed="600" data-align="top" data-context="info">Slide Toggle</a>
-					<a class="btn btn-primary btn-lg" data-tooltip="I will slide in from the side" data-animation="slide" data-align="left" data-context="info">Side Slide</a>
-					<a class="btn btn-success btn-lg" data-tooltip="I will slide in from the other side" data-animation="slide" data-align="right" data-context="success">Other Side</a>
-					<a class="btn btn-primary btn-lg" data-tooltip="I slide down while fading in!" data-animation="slidefade" data-align="top" data-context="info">Slide Fade Top</a>
-					<a class="btn btn-success btn-lg" data-tooltip="I slide up while fading in!" data-animation="slidefade" data-align="bottom" data-context="success">Slide Fade Bottom</a>
-					<a class="btn btn-warning btn-lg" data-tooltip="I slide in from the left while fading in!" data-animation="slidefade" data-align="left" data-context="warning">Slide Fade Left</a>
-					<a class="btn btn-danger btn-lg" data-tooltip="I slide in from the right while fading in!" data-animation="slidefade" data-align="right" data-context="danger">Slide Fade Right</a>
+					<a class="btn btn-primary btn-lg" data-bbtooltip="I take 600ms to appear and disappear" data-bbtooltip-speed="600" data-bbtooltip-align="top">Slow animation</a>
+					<a class="btn btn-warning btn-lg" data-bbtooltip="I take 200ms to appear and disappear" data-bbtooltip-speed="200" data-bbtooltip-context="warning" data-bbtooltip-align="bottom">Fast animation</a>
+					<a class="btn btn-success btn-lg" data-bbtooltip="I dont mess about, if you need help fast, here I am." data-bbtooltip-speed="0" data-bbtooltip-align="top" data-bbtooltip-context="success">No animation</a>
+					<a class="btn btn-primary btn-lg" data-bbtooltip="Well done, you clicked the button! I will disappear in 3 seconds (unless you get rid of me before)" data-bbtooltip-timeout="3000" data-bbtooltip-align="bottom" data-bbtooltip-context="info">Timeout</a>
+					<a class="btn btn-danger btn-lg" data-bbtooltip="Hey! I'm important and will cause any other tooltip on the page to disappear! Try it by using the 'toggle' example then this one." data-bbtooltip-interrupt="true" data-bbtooltip-context="danger" data-bbtooltip-align="top">Interrupt</a>
+					<a class="btn btn-primary btn-lg" data-bbtooltip="I need some feedback, let me know if you want to continue what you were doing" data-bbtooltip-feedback="true" data-bbtooltip-align="bottom" data-bbtooltip-context="info">Confirmation needed</a>
+					<a class="btn btn-success btn-lg" data-bbtooltip="I can animate in different ways" data-bbtooltip-animation="slide" data-bbtooltip-align="top" data-bbtooltip-context="success">Slide Toggle</a>
+					<a class="btn btn-primary btn-lg" data-bbtooltip="You can combine speed and animation options" data-bbtooltip-animation="slide" data-bbtooltip-speed="600" data-bbtooltip-align="top" data-bbtooltip-context="info">Slide Toggle</a>
+					<a class="btn btn-primary btn-lg" data-bbtooltip="I will slide in from the side" data-bbtooltip-animation="slide" data-bbtooltip-align="left" data-bbtooltip-context="info">Side Slide</a>
+					<a class="btn btn-success btn-lg" data-bbtooltip="I will slide in from the other side" data-bbtooltip-animation="slide" data-bbtooltip-align="right" data-bbtooltip-context="success">Other Side</a>
+					<a class="btn btn-primary btn-lg" data-bbtooltip="I slide down while fading in!" data-bbtooltip-animation="slidefade" data-bbtooltip-align="top" data-bbtooltip-context="info">Slide Fade Top</a>
+					<a class="btn btn-success btn-lg" data-bbtooltip="I slide up while fading in!" data-bbtooltip-animation="slidefade" data-bbtooltip-align="bottom" data-bbtooltip-context="success">Slide Fade Bottom</a>
+					<a class="btn btn-warning btn-lg" data-bbtooltip="I slide in from the left while fading in!" data-bbtooltip-animation="slidefade" data-bbtooltip-align="left" data-bbtooltip-context="warning">Slide Fade Left</a>
+					<a class="btn btn-danger btn-lg" data-bbtooltip="I slide in from the right while fading in!" data-bbtooltip-animation="slidefade" data-bbtooltip-align="right" data-bbtooltip-context="danger">Slide Fade Right</a>
 				</div>
 			</div>
 			<div class="panel panel-default">
 				<div class="panel-body" id="custom-triggers">
 					<h4>Custom triggers</h4>
-					<p>Custom triggers can be used by passing <code>data-trigger="event"</code> and <code>data-exit="event"</code> if using data-attributes, or <code>trigger: 'event', exit: 'event'</code> if using an options object.</p>
+					<p>Custom triggers can be used by passing <code>data-bbtooltip-trigger="event"</code> and <code>data-bbtooltip-exit="event"</code> if using data-attributes, or <code>trigger: 'event', exit: 'event'</code> if using an options object.</p>
 					<p>If you use custom tooltips, you will need to instantiate each Tooltip after the target element has been rendered, rather than creating following an event.</p>
-					<a class="btn btn-primary btn-lg" data-trigger="click" data-exit="click" data-tooltip="Click the button again to see me disappear">Toggle Me</a>
-					<a class="btn btn-primary btn-lg" data-trigger="mouseenter" data-exit="mouseleave" data-tooltip="I will show on mouseenter and disappear on mouseleave" data-align="bottom">Hover Over Me</a>
-					<a class="btn btn-primary btn-lg" data-trigger="mouseenter" data-exit="click" data-tooltip="I will show on mouseenter and disappear on click" data-align="top">Hover Over Me</a>
-					<a class="btn btn-primary btn-lg" data-trigger="click" data-exit="mouseleave" data-tooltip="I will show on click and disappear on mouseleave" data-align="bottom">Click Me</a>
+					<a class="btn btn-primary btn-lg" data-bbtooltip-trigger="click" data-bbtooltip-exit="click" data-bbtooltip="Click the button again to see me disappear">Toggle Me</a>
+					<a class="btn btn-primary btn-lg" data-bbtooltip-trigger="mouseenter" data-bbtooltip-exit="mouseleave" data-bbtooltip="I will show on mouseenter and disappear on mouseleave" data-bbtooltip-align="bottom">Hover Over Me</a>
+					<a class="btn btn-primary btn-lg" data-bbtooltip-trigger="mouseenter" data-bbtooltip-exit="click" data-bbtooltip="I will show on mouseenter and disappear on click" data-bbtooltip-align="top">Mouseenter show, click hide</a>
+					<a class="btn btn-primary btn-lg" data-bbtooltip-trigger="click" data-bbtooltip-exit="mouseleave" data-bbtooltip="I will show on click and disappear on mouseleave" data-bbtooltip-align="bottom">Click show, mouseleave hide</a>
 					<br />
 					<div class="row">
 						<div class="col-md-6">
 							<br />
-							<input type="text" class="form-control" data-align="top" placeholder="Start typing..." data-trigger="keypress" data-exit="blur" data-tooltip="Blur me to lose the tooltip!"/>
+							<input type="text" class="form-control" data-bbtooltip-align="top" placeholder="Start typing..." data-bbtooltip-trigger="keypress" data-bbtooltip-exit="blur" data-bbtooltip="Blur me to lose the tooltip!"/>
 						</div>
 						<div class="col-md-6">
 							<br />
-							<input type="text" class="form-control" data-align="top" placeholder="Double click me..." data-trigger="dblclick" data-exit="click" data-tooltip="Click me again to lose the tooltip!" data-animation="slidefade" />
+							<input type="text" class="form-control" data-bbtooltip-align="top" placeholder="Double click me..." data-bbtooltip-trigger="dblclick" data-bbtooltip-exit="click" data-bbtooltip="Click me again to lose the tooltip!" data-bbtooltip-animation="slidefade" />
 						</div>
 					</div>
 					<div class="radio">
 						<label>
-							<input type="checkbox" data-tooltip="Hey, you checked me!" data-prefix="Well Done" data-context="success" data-animation="slidefade" data-trigger="change" data-exit="change">
+							<input type="checkbox" data-bbtooltip="Hey, you checked me!" data-bbtooltip-prefix="Well Done" data-bbtooltip-context="success" data-bbtooltip-animation="slidefade" data-bbtooltip-trigger="change" data-bbtooltip-exit="change">
 							I can listen to change events
 						</label>
 					</div>
@@ -95,11 +95,11 @@
 				<div class="panel-body" id="data-attributes">
 					<h4>Passing jQuery elements</h4>
 					<p>These examples are created by simply passing the jQuery element to the Tooltip contructor and options are set directly on the element - view the source to see what is going on.</p>
-					<a class="btn btn-primary btn-lg" data-tooltip="This has been passed from the html element" data-align="top" data-context="info">Click Me</a>
-					<a class="btn btn-success btn-lg" data-tooltip="My data-distance is set to 50!" data-align="bottom" data-context="success" data-animation="slidefade" data-distance="50">Try me!</a>
-					<a class="btn btn-warning btn-lg" data-tooltip="Hey! Only click Yes if you know what you are doing!" data-align="top" data-context="warning" data-animation="slidefade" data-feedback="true">Warning</a>
-					<a class="btn btn-danger btn-lg" data-tooltip="Hey! Only click Yes if you know what you are doing!" data-align="bottom" data-context="danger" data-prefix="Danger" data-animation="slidefade" data-feedback="true">Danger</a>
-					<a class="btn btn-success btn-lg" data-tooltip="Better not click No or you might lose some changes!" data-align="top" data-context="success" data-animation="slidefade" data-feedback="true">Success</a>
+					<a class="btn btn-primary btn-lg" data-bbtooltip="This has been passed from the html element" data-bbtooltip-align="top" data-bbtooltip-context="info">Click Me</a>
+					<a class="btn btn-success btn-lg" data-bbtooltip="My data-bbtooltip-distance is set to 50!" data-bbtooltip-align="bottom" data-bbtooltip-context="success" data-bbtooltip-animation="slidefade" data-bbtooltip-distance="50">Try me!</a>
+					<a class="btn btn-warning btn-lg" data-bbtooltip="Hey! Only click Yes if you know what you are doing!" data-bbtooltip-align="top" data-bbtooltip-context="warning" data-bbtooltip-animation="slidefade" data-bbtooltip-feedback="true">Warning</a>
+					<a class="btn btn-danger btn-lg" data-bbtooltip="Hey! Only click Yes if you know what you are doing!" data-bbtooltip-align="bottom" data-bbtooltip-context="danger" data-bbtooltip-prefix="Danger" data-bbtooltip-animation="slidefade" data-bbtooltip-feedback="true">Danger</a>
+					<a class="btn btn-success btn-lg" data-bbtooltip="Better not click No or you might lose some changes!" data-bbtooltip-align="top" data-bbtooltip-context="success" data-bbtooltip-animation="slidefade" data-bbtooltip-feedback="true">Success</a>
 				</div>
 			</div>
 		</div>
@@ -132,7 +132,7 @@
 new Tooltip($jqueryObject);</pre>
 					<p>The tooltip is faded out and destroyed if something other than the tooltip or target element is clicked or the Tab key is pressed.</p>
 					<h4>Custom Triggers</h4>
-					<p>To use custom triggers rather than Backbone events, instantiate a <code>new Tooltip()</code> for each tooltip element when the element is rendered and pass the options <code>trigger</code> and <code>exit</code> or <code>data-trigger</code> and <code>data-exit</code> if using attributes. Pass in the names of the events for the tooltip to listen to.</p>
+					<p>To use custom triggers rather than Backbone events, instantiate a <code>new Tooltip()</code> for each tooltip element when the element is rendered and pass the options <code>trigger</code> and <code>exit</code> or <code>data-bbtooltip-trigger</code> and <code>data-bbtooltip-exit</code> if using attributes. Pass in the names of the events for the tooltip to listen to.</p>
 				</div>
 			</div>
 		</div>
@@ -166,18 +166,18 @@ new Tooltip($jqueryObject);</pre>
 							<h4>Data-Attributes</h4>
 							<p>Options can be configured on each element using <code>HTML5</code> data-attributes. The following data-attributes are supported</p>
 							<pre>&lt;a href="#"
-  data-tooltip="This is the tooltip text"
-  data-align="top"
-  data-context="info"
-  data-timeout="3000"
-  data-interrupt="true"
-  data-trigger="click"
-  data-exit="click"
-  data-speed="200"
-  data-prefix="Oops"
-  data-distance="50"
-  data-animation="slidefade"
-  data-feedback="true"&gt;Click Me&lt;/a&gt;
+  data-bbtooltip="This is the tooltip text"
+  data-bbtooltip-align="top"
+  data-bbtooltip-context="info"
+  data-bbtooltip-timeout="3000"
+  data-bbtooltip-interrupt="true"
+  data-bbtooltip-trigger="click"
+  data-bbtooltip-exit="click"
+  data-bbtooltip-speed="200"
+  data-bbtooltip-prefix="Oops"
+  data-bbtooltip-distance="50"
+  data-bbtooltip-animation="slidefade"
+  data-bbtooltip-feedback="true"&gt;Click Me&lt;/a&gt;
 
 </pre>					
 					</div>
